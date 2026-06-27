@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kartuli — Про грузинську мову</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+<style>
+:root {
+--bg: #F5F5F5;
+--surface: #FFFFFF;
+--text: #111111;
+--text-muted: #666666;
+--accent: #2C3E8C;
+--accent-light: #E8ECFA;
+--border: #E0E0E0;
+--radius: 12px;
+--transition: 0.3s ease;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+nav {
+background: var(--surface);
+border-bottom: 1px solid var(--border);
+padding: 0 24px;
+height: 64px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+position: sticky;
+top: 0;
+z-index: 100;
+}
+
+.logo { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--accent); }
+.logo span { background: var(--accent); color: #fff; border-radius: 6px; padding: 2px 8px; margin-right: 6px; }
+.nav-back { color: var(--text-muted); font-size: 14px; text-decoration: none; padding: 8px 12px; border-radius: 8px; transition: background var(--transition); }
+.nav-back:hover { background: var(--accent-light); color: var(--accent); }
+
+.container { max-width: 800px; margin: 0 auto; padding: 40px 24px; }
+
+.hero-banner {
+background: linear-gradient(135deg, var(--accent) 0%, #1a2666 100%);
+border-radius: 16px;
+padding: 48px 40px;
+text-align: center;
+color: #fff;
+margin-bottom: 40px;
+position: relative;
+overflow: hidden;
+}
+
+.hero-banner::before {
+content: 'საქართველო';
+position: absolute;
+font-size: 80px;
+opacity: 0.05;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+white-space: nowrap;
+}
+
+.hero-banner h1 { font-family: 'Playfair Display', serif; font-size: 36px; margin-bottom: 12px; }
+.hero-banner p { font-size: 16px; opacity: 0.85; line-height: 1.6; }
+.georgian-script { font-size: 48px; margin-bottom: 16px; }
+
+.tabs {
+display: flex;
+gap: 4px;
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: 10px;
+padding: 4px;
+margin-bottom: 32px;
+overflow-x: auto;
+}
+
+.tab {
+flex: 1;
+min-width: 100px;
+padding: 10px 16px;
+border: none;
+background: transparent;
+border-radius: 8px;
+font-size: 13px;
+font-weight: 500;
+color: var(--text-muted);
+cursor: pointer;
+transition: all var(--transition);
+white-space: nowrap;
+}
+
+.tab.active { background: var(--accent); color: #fff; }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* CARDS */
+.card {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+padding: 28px;
+margin-bottom: 20px;
+}
+
+.card h3 {
+font-size: 18px;
+font-weight: 600;
+margin-bottom: 12px;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.card p { font-size: 14px; line-height: 1.8; color: var(--text-muted); }
+.card p + p { margin-top: 12px; }
+
+/* FACTS GRID */
+.facts-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+gap: 16px;
+margin-bottom: 24px;
+}
+
+.fact-card {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+padding: 24px 20px;
+text-align: center;
+}
+
+.fact-icon { font-size: 36px; margin-bottom: 12px; }
+.fact-number { font-size: 32px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+.fact-label { font-size: 13px; color: var(--text-muted); }
+
+/* POEM */
+.poem-card {
+background: var(--accent-light);
+border: 1.5px solid var(--accent);
+border-radius: var(--radius);
+padding: 32px;
+margin-bottom: 20px;
+}
+
+.poem-title { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--accent); margin-bottom: 6px; }
+.poem-author { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+.poem-geo { font-size: 18px; line-height: 2; color: var(--accent); font-weight: 500; margin-bottom: 16px; }
+.poem-ukr { font-size: 14px; line-height: 2; color: var(--text-muted); font-style: italic; }
+
+/* TRADITIONS */
+.tradition-card {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+padding: 24px;
+margin-bottom: 16px;
+display: flex;
+gap: 20px;
+}
+
+.tradition-icon { font-size: 40px; flex-shrink: 0; }
+.tradition-card h4 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.tradition-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+/* FOOD */
+.food-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+gap: 16px;
+}
+
+.food-card {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+padding: 20px;
+text-align: center;
+}
+
+.food-emoji { font-size: 40px; margin-bottom: 10px; }
+.food-geo { font-size: 16px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+.food-latin { font-size: 11px; color: var(--text-muted); font-style: italic; margin-bottom: 6px; }
+.food-ukr { font-size: 13px; }
+.food-desc { font-size: 12px; color: var(--text-muted); margin-top: 6px; line-height: 1.4; }
+
+/* WORDS SLANG */
+.slang-list { display: flex; flex-direction: column; gap: 12px; }
+
+.slang-item {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+padding: 18px 20px;
+display: flex;
+gap: 16px;
+align-items: flex-start;
+}
+
+.slang-geo { font-size: 20px; font-weight: 700; color: var(--accent); min-width: 120px; }
+.slang-info h5 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.slang-info p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+/* MUSIC */
+.music-list { display: flex; flex-direction: column; gap: 12px; }
+
+.music-item {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+padding: 18px 20px;
+display: flex;
+gap: 16px;
+align-items: center;
+}
+
+.music-icon { font-size: 32px; flex-shrink: 0; }
+.music-item h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.music-item p { font-size: 13px; color: var(--text-muted); }
+
+.btn {
+background: var(--accent);
+color: #fff;
+border: none;
+border-radius: 8px;
+padding: 10px 20px;
+font-size: 14px;
+font-weight: 500;
+cursor: pointer;
+transition: opacity var(--transition);
+text-decoration: none;
+display: inline-block;
+}
+.btn:hover { opacity: 0.88; }
+</style>
+</head>
+<body>
+
+<nav>
+<div class="logo"><span>კ</span> Kartuli</div>
+<a class="nav-back" href="index.html">← Назад</a>
+</nav>
+
+<div class="container">
+
+<!-- HERO -->
+<div class="hero-banner">
+<div class="georgian-script">🇬🇪</div>
+<h1>Грузинська мова</h1>
+<p>Одна з найдавніших живих мов світу з унікальним алфавітом і багатою культурою</p>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+<button class="tab active" onclick="switchTab('facts')">📊 Факти</button>
+<button class="tab" onclick="switchTab('poetry')">📜 Поезія</button>
+<button class="tab" onclick="switchTab('traditions')">🎉 Традиції</button>
+<button class="tab" onclick="switchTab('food')">🍽️ Їжа</button>
+<button class="tab" onclick="switchTab('slang')">🗣️ Сленг</button>
+<button class="tab" onclick="switchTab('music')">🎵 Музика</button>
+</div>
+
+<!-- ФАКТИ -->
+<div class="tab-content active" id="tab-facts">
+<div class="facts-grid">
+<div class="fact-card">
+<div class="fact-icon">📅</div>
+<div class="fact-number">5000+</div>
+<div class="fact-label">років історії мови</div>
+</div>
+<div class="fact-card">
+<div class="fact-icon">🔤</div>
+<div class="fact-number">33</div>
+<div class="fact-label">літери в алфавіті</div>
+</div>
+<div class="fact-card">
+<div class="fact-icon">👥</div>
+<div class="fact-number">4 млн</div>
+<div class="fact-label">носіїв мови</div>
+</div>
+<div class="fact-card">
+<div class="fact-icon">🌍</div>
+<div class="fact-number">ТОП-10</div>
+<div class="fact-label">найкрасивіших алфавітів світу</div>
+</div>
+</div>
+
+<div class="card">
+<h3>🏛️ Історія мови</h3>
+<p>Грузинська мова належить до картвельської мовної сім'ї і є однією з небагатьох мов світу з власним оригінальним алфавітом. Писемність виникла приблизно у 5 столітті нашої ери.</p>
+<p>Сучасний алфавіт мхедрулі (მხედრული) використовується з 11 століття. Він настільки унікальний, що ЮНЕСКО визнало грузинський алфавіт нематеріальною спадщиною людства.</p>
+</div>
+
+<div class="card">
+<h3>🗺️ Де говорять грузинською?</h3>
+<p>Грузинська є офіційною мовою Грузії. Також на ній говорять у діаспорах по всьому світу — в Росії, Туреччині, Ірані, Ізраїлі та інших країнах. В Україні також є грузинська діаспора!</p>
+</div>
+
+<div class="card">
+<h3>✨ Унікальні особливості</h3>
+<p><strong>Немає роду</strong> — він і вона позначаються однаково словом "ის" (is).</p>
+<p><strong>Немає артиклів</strong> — як в українській, артиклі відсутні.</p>
+<p><strong>Дієслово в кінці</strong> — зазвичай речення закінчується дієсловом.</p>
+<p><strong>Складні приголосні</strong> — можуть бути групи з 6-7 приголосних підряд! Наприклад: გვprstvი.</p>
+</div>
+</div>
+
+<!-- ПОЕЗІЯ -->
+<div class="tab-content" id="tab-poetry">
+<div class="card">
+<h3>📜 Грузинська поетична традиція</h3>
+<p>Грузія має багату поетичну традицію. Найвидатніший твір грузинської літератури — епічна поема "Витязь у тигровій шкурі" (ვეფხისტყაოსანი) Шота Руставелі, написана у 12 столітті.</p>
+</div>
+
+<div class="poem-card">
+<div class="poem-title">ვეფხისტყაოსანი</div>
+<div class="poem-author">Шота Руставелі, 12 століття — "Витязь у тигровій шкурі"</div>
+<div class="poem-geo">
+თავი ყოვლისა სწავლისა<br>
+სიბრძნე სიმდაბლე არს,<br>
+ხოლო სიბრძნე სიყვარულმან<br>
+შობს ძმობასა ნათლად.
+</div>
+<div class="poem-ukr">
+Початок будь-якої мудрості —<br>
+це смиренність,<br>
+а мудрість породжена любов'ю<br>
+народжує братерство у світлі.
+</div>
+</div>
+
+<div class="poem-card">
+<div class="poem-title">სიმღერა</div>
+<div class="poem-author">Народна грузинська пісня</div>
+<div class="poem-geo">
+მრავალჟამიერ,<br>
+ღმერთმა შეგარგოს,<br>
+ქვეყნად სიკეთე,<br>
+და მშვიდობა.
+</div>
+<div class="poem-ukr">
+Многая літа,<br>
+Хай Бог дасть тобі,<br>
+На землі добро<br>
+і мир.
+</div>
+</div>
+
+<div class="card">
+<h3>✍️ Видатні грузинські поети</h3>
+<p><strong>Шота Руставелі</strong> (12 ст.) — автор "Витязя у тигровій шкурі", національного епосу Грузії.</p>
+<p><strong>Ніко Бараташвілі</strong> (19 ст.) — романтичний поет, його вірш "Меранi" став символом свободи.</p>
+<p><strong>Галактіон Табідзе</strong> (20 ст.) — найвидатніший грузинський поет 20 століття, майстер лірики.</p>
+</div>
+</div>
+
+<!-- ТРАДИЦІЇ -->
+<div class="tab-content" id="tab-traditions">
+<div class="tradition-card">
+<div class="tradition-icon">🍷</div>
+<div>
+<h4>სუფრა — Супра</h4>
+<p>Традиційний грузинський бенкет — ціла церемонія з особливими тостами. Тамада (тамадa) веде застілля і говорить тости за мир, любов, батьківщину. Слово "тамада" прийшло у багато мов з грузинської!</p>
+</div>
+</div>
+
+<div class="tradition-card">
+<div class="tradition-icon">💃</div>
+<div>
+<h4>ქართული ცეკვა — Грузинський танець</h4>
+<p>Грузинські народні танці — одні з найвидовищніших у світі. Чоловіки танцюють на носках, ніби ширяючи у повітрі. Жінки рухаються плавно і граціозно. Найвідоміший танець — Картулі.</p>
+</div>
+</div>
+
+<div class="tradition-card">
+<div class="tradition-icon">🍞</div>
+<div>
+<h4>პური — Хліб</h4>
+<p>Грузинський хліб шоті (შოთი) печуть у спеціальній печі — тонэ (თონე). Це довгий хліб з хрусткою скоринкою. Хліб в Грузії — священний символ гостинності.</p>
+</div>
+</div>
+
+<div class="tradition-card">
+<div class="tradition-icon">🏔️</div>
+<div>
+<h4>სვანეთი — Сванетія</h4>
+<p>Гірський регіон Грузії зі своєю унікальною культурою і мовою. Башти-замки Сванетії — пам'ятка ЮНЕСКО. Місцевий діалект настільки відрізняється, що іноді вважається окремою мовою.</p>
+</div>
+</div>
+
+<div class="tradition-card">
+<div class="tradition-icon">🎨</div>
+<div>
+<h4>ემალი — Перегородчаста емаль</h4>
+<p>Грузинське ювелірне мистецтво перегородчастої емалі — одне з найдавніших у світі. Ця техніка передається з покоління в покоління понад 1500 років.</p>
+</div>
+</div>
+</div>
+
+<!-- ЇЖА -->
+<div class="tab-content" id="tab-food">
+<div class="card" style="margin-bottom:24px;">
+<h3>🍽️ Грузинська кухня</h3>
+<p>Грузинська кухня — одна з найбагатших у світі. Вона поєднує впливи Сходу і Заходу, використовує унікальні спеції і трави. Базові продукти — волоський горіх, гранат, кінза, пажитник.</p>
+</div>
+
+<div class="food-grid">
+<div class="food-card">
+<div class="food-emoji">🥟</div>
+<div class="food-geo">ხინკალი</div>
+<div class="food-latin">khinkali</div>
+<div class="food-ukr">Хінкалі</div>
+<div class="food-desc">Великі пельмені з м'ясом і бульйоном всередині. Їдять руками!</div>
+</div>
+<div class="food-card">
+<div class="food-emoji">🫓</div>
+<div class="food-geo">ხაჭაპური</div>
+<div class="food-latin">khachapuri</div>
+<div class="food-ukr">Хачапурі</div>
+<div class="food-desc">Хліб з сиром. Існує багато різновидів — аджарський з яйцем найвідоміший!</div>
+</div>
+<div class="food-card">
+<div class="food-emoji">🍆</div>
+<div class="food-geo">ბადრიჯანი</div>
+<div class="food-latin">badrijani</div>
+<div class="food-ukr">Бадріджані</div>
+<div class="food-desc">Баклажани з волоським горіхом і часником. Обов'язкова страва!</div>
+</div>
+<div class="food-card">
+<div class="food-emoji">🍲</div>
+<div class="food-geo">ჩახოხბილი</div>
+<div class="food-latin">chakhokhbili</div>
+<div class="food-ukr">Чахохбілі</div>
+<div class="food-desc">Тушкована курка з томатами і травами. Насичений смак!</div>
+</div>
+<div class="food-card">
+<div class="food-emoji">🥗</div>
+<div class="food-geo">პხალი</div>
+<div class="food-latin">pkhali</div>
+<div class="food-ukr">Пхалі</div>
+<div class="food-desc">Кульки з овочів з волоським горіхом та спеціями.</div>
+</div>
+<div class="food-card">
+<div class="food-emoji">🍷</div>
+<div class="food-geo">ღვინო</div>
+<div class="food-latin">ghvino</div>
+<div class="food-ukr">Вино</div>
+<div class="food-desc">Грузія — батьківщина виноробства! 8000 років культури вина.</div>
+</div>
+</div>
+</div>
+
+<!-- СЛЕНГ -->
+<div class="tab-content" id="tab-slang">
+<div class="card" style="margin-bottom:24px;">
+<h3>🗣️ Як говорять справжні грузини</h3>
+<p>Розмовна грузинська відрізняється від книжної. Ось популярні вирази і сленг які ти почуєш на вулицях Тбілісі!</p>
+</div>
+
+<div class="slang-list">
+<div class="slang-item">
+<div class="slang-geo">შოკშია!</div>
+<div class="slang-info">
+<h5>Shokshia! — Дуже гаряче!</h5>
+<p>Використовується коли щось дуже гаряче або в переносному сенсі — щось крутe, гаряча новина.</p>
+</div>
+</div>
+<div class="slang-item">
+<div class="slang-geo">მაგარია!</div>
+<div class="slang-info">
+<h5>Magaria! — Круто!</h5>
+<p>Найпопулярніший вигук схвалення. Буквально означає "тверде/міцне" але використовується як "круто!"</p>
+</div>
+</div>
+<div class="slang-item">
+<div class="slang-geo">ბიჭო!</div>
+<div class="slang-info">
+<h5>Bicho! — Чувак! Братан!</h5>
+<p>Звернення до друга або знайомого. Буквально "хлопець" але вживається як "чувак".</p>
+</div>
+</div>
+<div class="slang-item">
+<div class="slang-geo">გენაცვალე!</div>
+<div class="slang-info">
+<h5>Genatsvalé! — Рідненький!</h5>
+<p>Ніжне звернення. Буквально означає "я пожертвую собою заради тебе" — дуже ніжний вираз любові.</p>
+</div>
+</div>
+<div class="slang-item">
+<div class="slang-geo">არ ვიცი!</div>
+<div class="slang-info">
+<h5>Ar vitsi! — Не знаю!</h5>
+<p>Дуже часто вживаний вираз в розмовній мові. Вчи його — знадобиться!</p>
+</div>
+</div>
+<div class="slang-item">
+<div class="slang-geo">ვაიმე!</div>
+<div class="slang-info">
+<h5>Vaime! — Ой лишенько!</h5>
+<p>Вигук здивування або жалю. Схоже на українське "ой!" або "боже мій!"</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- МУЗИКА -->
+<div class="tab-content" id="tab-music">
+<div class="card" style="margin-bottom:24px;">
+<h3>🎵 Грузинська музика</h3>
+<p>Грузинська поліфонічна музика визнана ЮНЕСКО нематеріальною спадщиною людства. Традиційний хоровий спів з трьох голосів — унікальне явище у світовій культурі!</p>
+</div>
+
+<div class="music-list">
+<div class="music-item">
+<div class="music-icon">🎶</div>
+<div>
+<h4>მრავალჟამიერ — Мравалжамієр</h4>
+<p>Традиційний тост-пісня. Співається на застіллях і означає "Многая літа!" — побажання довгих років.</p>
+</div>
+</div>
+<div class="music-item">
+<div class="music-icon">🎵</div>
+<div>
+<h4>სულико — Суліко</h4>
+<p>Найвідоміша грузинська народна пісня на вірші Акакія Церетелі. Пісня про пошук душі коханої.</p>
+</div>
+</div>
+<div class="music-item">
+<div class="music-icon">🎤</div>
+<div>
+<h4>Нані Брегвадзе</h4>
+<p>Легенда грузинської музики. Її голос — символ грузинської романтичної пісні. Обов'язково послухай!</p>
+</div>
+</div>
+<div class="music-item">
+<div class="music-icon">🎸</div>
+<div>
+<h4>Сучасна грузинська музика</h4>
+<p>Georgia Song, Иракли, Нікo Нікобадзе — сучасні виконавці які поєднують традиції з поп-музикою.</p>
+</div>
+</div>
+<div class="music-item">
+<div class="music-icon">🥁</div>
+<div>
+<h4>დოლი — Грузинський барабан</h4>
+<p>Долі — традиційний грузинський барабан. Разом з пандурі (струнний інструмент) складає основу народної музики.</p>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+function switchTab(name) {
+const names = ['facts', 'poetry', 'traditions', 'food', 'slang', 'music'];
+document.querySelectorAll('.tab').forEach((t, i) => {
+t.classList.toggle('active', names[i] === name);
+});
+document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+document.getElementById('tab-' + name).classList.add('active');
+}
+</script>
+</body>
+</html>
