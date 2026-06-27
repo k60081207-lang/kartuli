@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Kartuli — Рівень A1</title>
+<title>Kartuli — Вивчай грузинську</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
 <style>
@@ -15,10 +15,6 @@
 --accent: #2C3E8C;
 --accent-light: #E8ECFA;
 --border: #E0E0E0;
---success: #2E7D32;
---success-light: #E8F5E9;
---error: #C62828;
---error-light: #FFEBEE;
 --radius: 12px;
 --transition: 0.3s ease;
 }
@@ -32,7 +28,7 @@ color: var(--text);
 min-height: 100vh;
 }
 
-/* NAV */
+/* ── NAV ── */
 nav {
 background: var(--surface);
 border-bottom: 1px solid var(--border);
@@ -48,357 +44,50 @@ z-index: 100;
 
 .logo {
 font-family: 'Playfair Display', serif;
-font-size: 20px;
+font-size: 22px;
 color: var(--accent);
+letter-spacing: 1px;
 }
 
 .logo span {
+display: inline-block;
 background: var(--accent);
 color: #fff;
 border-radius: 6px;
 padding: 2px 8px;
 margin-right: 6px;
+font-size: 18px;
 }
 
-.nav-back {
+.nav-links {
 display: flex;
-align-items: center;
 gap: 8px;
-color: var(--text-muted);
-font-size: 14px;
-cursor: pointer;
-padding: 8px 12px;
-border-radius: 8px;
-transition: background var(--transition);
+}
+
+.nav-links a {
 text-decoration: none;
-}
-
-.nav-back:hover { background: var(--accent-light); color: var(--accent); }
-
-/* PROGRESS BAR TOP */
-.top-progress {
-height: 4px;
-background: var(--border);
-position: sticky;
-top: 64px;
-z-index: 99;
-}
-
-.top-progress-fill {
-height: 100%;
-background: var(--accent);
-transition: width 0.5s ease;
-}
-
-/* LAYOUT */
-.container {
-max-width: 800px;
-margin: 0 auto;
-padding: 40px 24px;
-}
-
-/* TABS */
-.tabs {
-display: flex;
-gap: 4px;
-background: var(--surface);
-border: 1px solid var(--border);
-border-radius: 10px;
-padding: 4px;
-margin-bottom: 32px;
-overflow-x: auto;
-}
-
-.tab {
-flex: 1;
-min-width: 100px;
-padding: 10px 16px;
-border: none;
-background: transparent;
-border-radius: 8px;
-font-size: 13px;
-font-weight: 500;
 color: var(--text-muted);
-cursor: pointer;
+font-size: 14px;
+font-weight: 500;
+padding: 8px 14px;
+border-radius: 8px;
 transition: background var(--transition), color var(--transition);
-white-space: nowrap;
 }
 
-.tab.active {
-background: var(--accent);
-color: #fff;
-}
+.nav-links a:hover { background: var(--accent-light); color: var(--accent); }
 
-/* SECTION HEADER */
-.section-header {
-margin-bottom: 28px;
-}
-
-.level-badge {
-display: inline-block;
-background: var(--accent-light);
-color: var(--accent);
-font-size: 11px;
-font-weight: 700;
-letter-spacing: 1px;
-padding: 4px 10px;
-border-radius: 20px;
-margin-bottom: 12px;
-}
-
-.section-header h1 {
-font-family: 'Playfair Display', serif;
-font-size: 32px;
-margin-bottom: 8px;
-}
-
-.section-header p {
-color: var(--text-muted);
-font-size: 15px;
-line-height: 1.6;
-}
-
-/* AI EXPLANATION BOX */
-.ai-box {
-background: var(--accent-light);
-border: 1.5px solid var(--accent);
-border-radius: var(--radius);
-padding: 24px;
-margin-bottom: 32px;
-display: flex;
-gap: 16px;
-}
-
-.ai-avatar {
-width: 40px;
-height: 40px;
-background: var(--accent);
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 18px;
-flex-shrink: 0;
-}
-
-.ai-box p {
-font-size: 14px;
-line-height: 1.7;
-color: var(--text);
-}
-
-.ai-box strong { color: var(--accent); }
-
-/* ALPHABET GRID */
-.alphabet-grid {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-gap: 12px;
-margin-bottom: 32px;
-}
-
-.letter-card {
-background: var(--surface);
-border: 1.5px solid var(--border);
-border-radius: var(--radius);
-padding: 16px 8px;
-text-align: center;
-cursor: pointer;
-transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
-}
-
-.letter-card:hover {
-border-color: var(--accent);
-transform: translateY(-2px);
-box-shadow: 0 4px 12px rgba(44,62,140,0.1);
-}
-
-.letter-card.played { border-color: var(--accent); background: var(--accent-light); }
-
-.letter-geo { font-size: 28px; font-weight: 700; color: var(--accent); }
-.letter-latin { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
-.letter-sound { font-size: 10px; color: var(--text-muted); }
-
-/* WORD CARDS */
-.cards-grid {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-gap: 16px;
-margin-bottom: 32px;
-}
-
-.word-card {
-background: var(--surface);
-border: 1.5px solid var(--border);
-border-radius: var(--radius);
-padding: 20px;
-cursor: pointer;
-transition: all var(--transition);
-position: relative;
-overflow: hidden;
-}
-
-.word-card:hover {
-border-color: var(--accent);
-box-shadow: 0 4px 16px rgba(44,62,140,0.1);
-}
-
-.word-card .emoji { font-size: 36px; margin-bottom: 12px; display: block; }
-.word-card .geo { font-size: 20px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
-.word-card .latin { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-style: italic; }
-.word-card .ukr { font-size: 14px; font-weight: 500; }
-
-.word-card .play-btn {
-position: absolute;
-top: 12px;
-right: 12px;
-background: var(--accent-light);
-border: none;
-border-radius: 50%;
-width: 32px;
-height: 32px;
-display: flex;
-align-items: center;
-justify-content: center;
-cursor: pointer;
-font-size: 14px;
-transition: background var(--transition);
-}
-
-.word-card .play-btn:hover { background: var(--accent); color: #fff; }
-
-/* GRAMMAR CARD */
-.grammar-card {
-background: var(--surface);
-border: 1px solid var(--border);
-border-radius: var(--radius);
-padding: 28px;
-margin-bottom: 20px;
-}
-
-.grammar-card h3 {
-font-size: 16px;
-font-weight: 600;
-margin-bottom: 12px;
-display: flex;
-align-items: center;
-gap: 8px;
-}
-
-.grammar-card p {
-font-size: 14px;
-line-height: 1.7;
-color: var(--text-muted);
-margin-bottom: 16px;
-}
-
-.example-row {
-background: var(--bg);
-border-radius: 8px;
-padding: 14px 16px;
-margin-bottom: 8px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-font-size: 14px;
-}
-
-.example-geo { color: var(--accent); font-weight: 600; }
-.example-ukr { color: var(--text-muted); }
-
-/* QUIZ */
-.quiz-card {
-background: var(--surface);
-border: 1px solid var(--border);
-border-radius: var(--radius);
-padding: 32px;
-margin-bottom: 20px;
-}
-
-.quiz-question {
-font-size: 18px;
-font-weight: 600;
-margin-bottom: 8px;
-}
-
-.quiz-geo {
-font-size: 32px;
-color: var(--accent);
-font-weight: 700;
-margin-bottom: 24px;
-}
-
-.quiz-options {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 12px;
-}
-
-.quiz-option {
-padding: 14px 18px;
-border: 1.5px solid var(--border);
-border-radius: 8px;
-background: var(--surface);
-font-size: 14px;
-font-weight: 500;
-cursor: pointer;
-transition: all var(--transition);
-text-align: left;
-}
-
-.quiz-option:hover { border-color: var(--accent); background: var(--accent-light); }
-.quiz-option.correct { border-color: var(--success); background: var(--success-light); color: var(--success); }
-.quiz-option.wrong { border-color: var(--error); background: var(--error-light); color: var(--error); }
-
-.quiz-feedback {
-margin-top: 16px;
-padding: 12px 16px;
-border-radius: 8px;
-font-size: 14px;
-font-weight: 500;
-display: none;
-}
-
-.quiz-feedback.show { display: block; }
-.quiz-feedback.correct { background: var(--success-light); color: var(--success); }
-.quiz-feedback.wrong { background: var(--error-light); color: var(--error); }
-
-.quiz-next {
-margin-top: 16px;
-display: none;
-}
-
-.quiz-next.show { display: block; }
-
-/* SCORE */
-.score-bar {
-display: flex;
-align-items: center;
-gap: 12px;
-background: var(--surface);
-border: 1px solid var(--border);
-border-radius: var(--radius);
-padding: 16px 20px;
-margin-bottom: 24px;
-font-size: 14px;
-}
-
-.score-item { display: flex; align-items: center; gap: 6px; }
-.score-dot { width: 10px; height: 10px; border-radius: 50%; }
-.score-dot.correct { background: var(--success); }
-.score-dot.wrong { background: var(--error); }
-
-/* BTN */
 .btn {
 background: var(--accent);
 color: #fff;
 border: none;
 border-radius: 8px;
-padding: 12px 24px;
+padding: 10px 20px;
 font-size: 14px;
 font-weight: 500;
 cursor: pointer;
 transition: opacity var(--transition);
+text-decoration: none;
+display: inline-block;
 }
 
 .btn:hover { opacity: 0.88; }
@@ -411,438 +100,471 @@ border: 1.5px solid var(--accent);
 
 .btn-outline:hover { background: var(--accent-light); opacity: 1; }
 
-/* TAB CONTENT */
-.tab-content { display: none; }
-.tab-content.active { display: block; }
+/* ── HERO ── */
+.hero {
+max-width: 900px;
+margin: 80px auto 0;
+padding: 0 24px;
+text-align: center;
+}
 
-/* LESSON LIST */
-.lesson-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+.hero-eyebrow {
+font-size: 12px;
+font-weight: 600;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--accent);
+margin-bottom: 20px;
+}
 
-.lesson-item {
+.hero h1 {
+font-family: 'Playfair Display', serif;
+font-size: clamp(36px, 6vw, 64px);
+line-height: 1.15;
+margin-bottom: 20px;
+color: var(--text);
+}
+
+.georgian-word {
+color: var(--accent);
+}
+
+.hero p {
+font-size: 18px;
+color: var(--text-muted);
+max-width: 560px;
+margin: 0 auto 36px;
+line-height: 1.6;
+}
+
+.hero-actions {
+display: flex;
+gap: 12px;
+justify-content: center;
+flex-wrap: wrap;
+}
+
+/* ── LEVELS GRID ── */
+.section {
+max-width: 900px;
+margin: 80px auto;
+padding: 0 24px;
+}
+
+.section-title {
+font-size: 13px;
+font-weight: 600;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--text-muted);
+margin-bottom: 28px;
+}
+
+.levels-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+gap: 16px;
+}
+
+.level-card {
 background: var(--surface);
 border: 1.5px solid var(--border);
 border-radius: var(--radius);
-padding: 20px 24px;
-display: flex;
-align-items: center;
-justify-content: space-between;
+padding: 24px 20px;
 cursor: pointer;
-transition: all var(--transition);
+transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+position: relative;
+overflow: hidden;
 }
 
-.lesson-item:hover { border-color: var(--accent); }
-.lesson-item.active-lesson { border-color: var(--accent); background: var(--accent-light); }
+.level-card:hover {
+border-color: var(--accent);
+box-shadow: 0 4px 20px rgba(44, 62, 140, 0.1);
+transform: translateY(-2px);
+}
 
-.lesson-item-left { display: flex; align-items: center; gap: 16px; }
-.lesson-num {
-width: 36px; height: 36px;
+.level-card.locked {
+opacity: 0.45;
+cursor: not-allowed;
+}
+
+.level-badge {
+display: inline-block;
 background: var(--accent-light);
 color: var(--accent);
-border-radius: 50%;
-display: flex; align-items: center; justify-content: center;
-font-weight: 700; font-size: 14px;
+font-size: 11px;
+font-weight: 700;
+letter-spacing: 1px;
+padding: 4px 10px;
+border-radius: 20px;
+margin-bottom: 14px;
 }
 
-.lesson-item h4 { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
-.lesson-item p { font-size: 12px; color: var(--text-muted); }
-.lesson-status { font-size: 18px; }
+.level-card h3 {
+font-size: 17px;
+font-weight: 600;
+margin-bottom: 6px;
+}
 
+.level-card p {
+font-size: 13px;
+color: var(--text-muted);
+line-height: 1.5;
+}
+
+.level-card .lock-icon {
+position: absolute;
+top: 16px;
+right: 16px;
+font-size: 16px;
+}
+
+.progress-bar {
+height: 3px;
+background: var(--border);
+border-radius: 2px;
+margin-top: 16px;
+overflow: hidden;
+}
+
+.progress-fill {
+height: 100%;
+background: var(--accent);
+border-radius: 2px;
+transition: width 0.5s ease;
+}
+
+/* ── FEATURES ── */
+.features-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+gap: 20px;
+}
+
+.feature-card {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+padding: 28px 24px;
+}
+
+.feature-icon {
+font-size: 28px;
+margin-bottom: 14px;
+}
+
+.feature-card h4 {
+font-size: 15px;
+font-weight: 600;
+margin-bottom: 8px;
+}
+
+.feature-card p {
+font-size: 13px;
+color: var(--text-muted);
+line-height: 1.6;
+}
+
+/* ── FOOTER ── */
+footer {
+border-top: 1px solid var(--border);
+text-align: center;
+padding: 32px 24px;
+font-size: 13px;
+color: var(--text-muted);
+}
+
+/* ── MODAL ── */
+.modal-overlay {
+display: none;
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,0.4);
+z-index: 200;
+align-items: center;
+justify-content: center;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+background: var(--surface);
+border-radius: 16px;
+padding: 40px;
+width: 100%;
+max-width: 420px;
+margin: 24px;
+animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+from { transform: translateY(20px); opacity: 0; }
+to { transform: translateY(0); opacity: 1; }
+}
+
+.modal h2 {
+font-family: 'Playfair Display', serif;
+font-size: 24px;
+margin-bottom: 8px;
+}
+
+.modal p { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; }
+
+.form-group { margin-bottom: 16px; }
+
+.form-group label {
+display: block;
+font-size: 13px;
+font-weight: 500;
+margin-bottom: 6px;
+}
+
+.form-group input {
+width: 100%;
+padding: 11px 14px;
+border: 1.5px solid var(--border);
+border-radius: 8px;
+font-size: 14px;
+font-family: 'Inter', sans-serif;
+outline: none;
+transition: border-color var(--transition);
+}
+
+.form-group input:focus { border-color: var(--accent); }
+
+.modal-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
+
+.divider {
+display: flex;
+align-items: center;
+gap: 12px;
+margin: 4px 0;
+color: var(--text-muted);
+font-size: 12px;
+}
+
+.divider::before, .divider::after {
+content: '';
+flex: 1;
+height: 1px;
+background: var(--border);
+}
+
+.btn-google {
+background: var(--surface);
+color: var(--text);
+border: 1.5px solid var(--border);
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+width: 100%;
+padding: 11px;
+border-radius: 8px;
+font-size: 14px;
+font-weight: 500;
+cursor: pointer;
+transition: background var(--transition);
+}
+
+.btn-google:hover { background: var(--bg); }
+
+.modal-close {
+position: absolute;
+top: 16px;
+right: 20px;
+background: none;
+border: none;
+font-size: 22px;
+cursor: pointer;
+color: var(--text-muted);
+}
+
+/* ── RESPONSIVE ── */
 @media (max-width: 600px) {
-.quiz-options { grid-template-columns: 1fr; }
-.alphabet-grid { grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); }
+.nav-links { display: none; }
+.hero { margin-top: 48px; }
 }
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
 <div class="logo"><span>კ</span> Kartuli</div>
-<a class="nav-back" href="index.html">← Назад до рівнів</a>
+<div class="nav-links">
+<a href="#">Рівні</a>
+<a href="#">Ігри</a>
+<a href="#">Форум</a>
+<a href="#">Про мову</a>
+</div>
+<div style="display:flex;gap:8px;">
+<button class="btn btn-outline" onclick="openModal('login')">Увійти</button>
+<button class="btn" onclick="openModal('register')">Розпочати</button>
+</div>
 </nav>
 
-<div class="top-progress">
-<div class="top-progress-fill" id="topProgress" style="width: 0%"></div>
+<!-- HERO -->
+<section class="hero">
+<p class="hero-eyebrow">Безкоштовно · Грузинська мова · Всі рівні</p>
+<h1>Говори грузинською.<br><span class="georgian-word">გამარჯობა</span>, світе!</h1>
+<p>Вивчай грузинську з нуля до рівня C2 — з граматикою, вимовою, діалогами зі штучним інтелектом та живою спільнотою.</p>
+<div class="hero-actions">
+<button class="btn" onclick="openModal('register')">Розпочати безкоштовно</button>
+<button class="btn btn-outline">Переглянути програму</button>
 </div>
+</section>
 
-<div class="container">
+<!-- LEVELS -->
+<section class="section">
+<p class="section-title">Програма навчання</p>
+<div class="levels-grid">
+<div class="level-card" onclick="goToLevel('A1')">
+<div class="level-badge">A1</div>
+<h3>Початківець</h3>
+<p>Алфавіт, вітання, числа, базові слова. ~100 слів.</p>
+<div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+</div>
+<div class="level-card" onclick="goToLevel('A2')">
+<div class="level-badge">A2</div>
+<h3>Елементарний</h3>
+<p>Сім'я, повсякдення, прості речення. ~300 слів.</p>
+<div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+</div>
+<div class="level-card locked">
+<div class="level-badge">B1</div>
+<span class="lock-icon">🔒</span>
+<h3>Середній</h3>
+<p>Граматика, відмінки, складні діалоги. ~500 слів.</p>
+<div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+</div>
+<div class="level-card locked">
+<div class="level-badge">B2</div>
+<span class="lock-icon">🔒</span>
+<h3>Вище середнього</h3>
+<p>Ідіоми, культура, вільне спілкування. ~1200 слів.</p>
+<div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+</div>
+<div class="level-card locked">
+<div class="level-badge">C1</div>
+<span class="lock-icon">🔒</span>
+<h3>Просунутий</h3>
+<p>Преса, література, ділова мова. ~1500 слів.</p>
+<div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+</div>
+<div class="level-card locked">
+<div class="level-badge">C2</div>
+<span class="lock-icon">🔒</span>
+<h3>Досконалий</h3>
+<p>Вільне володіння, поезія, нюанси. ~2000 слів.</p>
+<div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+</div>
+</div>
+</section>
 
-<div class="section-header">
-<div class="level-badge">A1 — Початківець</div>
-<h1>Грузинська з нуля</h1>
-<p>Алфавіт, перші слова, вітання та базова граматика. Починаємо з самого початку!</p>
+<!-- FEATURES -->
+<section class="section">
+<p class="section-title">Що є в Kartuli</p>
+<div class="features-grid">
+<div class="feature-card">
+<div class="feature-icon">🎙️</div>
+<h4>Голосові діалоги</h4>
+<p>Розмовляй зі штучним інтелектом, як з живим грузином. Отримуй виправлення в реальному часі.</p>
 </div>
+<div class="feature-card">
+<div class="feature-icon">🃏</div>
+<h4>Картки зі словами</h4>
+<p>Картинка, грузинське слово, транскрипція і вимова разом. Наприклад: 🍊 პორტოხალი — portoxali.</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon">🎮</div>
+<h4>Ігри</h4>
+<p>Match, Memory, Spelling Challenge, Word Scramble та інші — вчись граючи.</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon">📖</div>
+<h4>Граматика в контексті</h4>
+<p>Кожне слово з реченням, кожне речення з граматичним поясненням від ШІ.</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon">🔤</div>
+<h4>Вимова та алфавіт</h4>
+<p>33 грузинські літери з аудіо та практикою читання вголос. ШІ перевіряє твою вимову.</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon">🏅</div>
+<h4>Сертифікати рівнів</h4>
+<p>Після кожного рівня отримуй красивий сертифікат, яким можна поділитися в соцмережах.</p>
+</div>
+</div>
+</section>
 
-<!-- TABS -->
-<div class="tabs">
-<button class="tab active" onclick="switchTab('lessons')">📚 Уроки</button>
-<button class="tab" onclick="switchTab('alphabet')">🔤 Алфавіт</button>
-<button class="tab" onclick="switchTab('words')">🃏 Слова</button>
-<button class="tab" onclick="switchTab('grammar')">📖 Граматика</button>
-<button class="tab" onclick="switchTab('quiz')">✏️ Тест</button>
-</div>
+<!-- FOOTER -->
+<footer>
+<p>© 2025 Kartuli · Безкоштовно назавжди · Зроблено з ❤️ для тих, хто вивчає грузинську</p>
+</footer>
 
-<!-- УРОКИ -->
-<div class="tab-content active" id="tab-lessons">
-<div class="ai-box">
-<div class="ai-avatar">🤖</div>
-<p>Вітаю на рівні <strong>A1</strong>! Тут ти вивчиш грузинський алфавіт з 33 літер, перші 100 слів та зможеш вітатися і представлятися грузинською. Починаємо з алфавіту — це основа всього!</p>
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+<div class="modal" style="position:relative;">
+<button class="modal-close" onclick="closeModal()">×</button>
+<div id="modal-content"></div>
 </div>
-
-<div class="lesson-list">
-<div class="lesson-item active-lesson" onclick="switchTab('alphabet')">
-<div class="lesson-item-left">
-<div class="lesson-num">1</div>
-<div>
-<h4>Грузинський алфавіт</h4>
-<p>33 літери · вимова · написання</p>
-</div>
-</div>
-<span class="lesson-status">▶️</span>
-</div>
-<div class="lesson-item" onclick="switchTab('words')">
-<div class="lesson-item-left">
-<div class="lesson-num">2</div>
-<div>
-<h4>Перші слова</h4>
-<p>Вітання, числа, кольори · 30 слів</p>
-</div>
-</div>
-<span class="lesson-status">🔒</span>
-</div>
-<div class="lesson-item" onclick="switchTab('grammar')">
-<div class="lesson-item-left">
-<div class="lesson-num">3</div>
-<div>
-<h4>Базова граматика</h4>
-<p>Займенники, структура речення</p>
-</div>
-</div>
-<span class="lesson-status">🔒</span>
-</div>
-<div class="lesson-item" onclick="switchTab('quiz')">
-<div class="lesson-item-left">
-<div class="lesson-num">4</div>
-<div>
-<h4>Тест A1</h4>
-<p>Перевір свої знання</p>
-</div>
-</div>
-<span class="lesson-status">🔒</span>
-</div>
-</div>
-</div>
-
-<!-- АЛФАВІТ -->
-<div class="tab-content" id="tab-alphabet">
-<div class="ai-box">
-<div class="ai-avatar">🤖</div>
-<p>Грузинський алфавіт називається <strong>მხედრული (мхедрулі)</strong> і має <strong>33 літери</strong>. Кожна літера відповідає одному звуку — тому читати легше ніж в англійській! Натискай на літеру щоб почути вимову.</p>
-</div>
-
-<div class="alphabet-grid" id="alphabetGrid"></div>
-
-<div style="display:flex;gap:12px;flex-wrap:wrap;">
-<button class="btn" onclick="playAllLetters()">▶️ Прослухати всі</button>
-<button class="btn btn-outline" onclick="switchTab('words')">Далі: Перші слова →</button>
-</div>
-</div>
-
-<!-- СЛОВА -->
-<div class="tab-content" id="tab-words">
-<div class="ai-box">
-<div class="ai-avatar">🤖</div>
-<p>Перші слова які потрібно знати! <strong>გამარჯობა</strong> (гамарджоба) — це привіт. <strong>მადლობა</strong> (мадлоба) — дякую. Натискай на картку щоб почути вимову, а на 🔊 щоб повторити звук.</p>
-</div>
-
-<div class="cards-grid" id="wordsGrid"></div>
-
-<button class="btn btn-outline" onclick="switchTab('grammar')">Далі: Граматика →</button>
-</div>
-
-<!-- ГРАМАТИКА -->
-<div class="tab-content" id="tab-grammar">
-<div class="ai-box">
-<div class="ai-avatar">🤖</div>
-<p>Грузинська мова дуже відрізняється від української. Тут <strong>немає роду</strong> (він/вона — однаково <strong>ის</strong>). Порядок слів гнучкий. Дієслово зазвичай стоїть <strong>в кінці речення</strong>. Вивчимо займенники та перші речення!</p>
-</div>
-
-<div class="grammar-card">
-<h3>👤 Займенники</h3>
-<p>В грузинській мові немає різниці між він і вона — обидва це <strong>ის</strong>. Це простіше ніж в українській!</p>
-<div class="example-row"><span class="example-geo">მე</span><span class="example-ukr">я (me)</span></div>
-<div class="example-row"><span class="example-geo">შენ</span><span class="example-ukr">ти (shen)</span></div>
-<div class="example-row"><span class="example-geo">ის</span><span class="example-ukr">він / вона (is)</span></div>
-<div class="example-row"><span class="example-geo">ჩვენ</span><span class="example-ukr">ми (chven)</span></div>
-<div class="example-row"><span class="example-geo">თქვენ</span><span class="example-ukr">ви (tkven)</span></div>
-<div class="example-row"><span class="example-geo">ისინი</span><span class="example-ukr">вони (isini)</span></div>
-</div>
-
-<div class="grammar-card">
-<h3>💬 Перші речення</h3>
-<p>Структура простого речення: <strong>Підмет + Додаток + Дієслово</strong>. Дієслово йде в кінці!</p>
-<div class="example-row"><span class="example-geo">მე სტუდენტი ვარ</span><span class="example-ukr">Я студент (me studenti var)</span></div>
-<div class="example-row"><span class="example-geo">შენ ლამაზი ხარ</span><span class="example-ukr">Ти гарна (shen lamazi khar)</span></div>
-<div class="example-row"><span class="example-geo">ის ექიმია</span><span class="example-ukr">Він/вона лікар (is eqimia)</span></div>
-</div>
-
-<div class="grammar-card">
-<h3>🗣️ Вітання</h3>
-<p>Як правильно вітатися з грузинами!</p>
-<div class="example-row"><span class="example-geo">გამარჯობა!</span><span class="example-ukr">Привіт! (gamarjoba)</span></div>
-<div class="example-row"><span class="example-geo">როგორ ხარ?</span><span class="example-ukr">Як справи? (rogor khar)</span></div>
-<div class="example-row"><span class="example-geo">კარგად, მადლობა</span><span class="example-ukr">Добре, дякую (kargad, madloba)</span></div>
-<div class="example-row"><span class="example-geo">ნახვამდის!</span><span class="example-ukr">До побачення! (nakhvamdis)</span></div>
-</div>
-
-<button class="btn" onclick="switchTab('quiz')">Далі: Тест →</button>
-</div>
-
-<!-- ТЕСТ -->
-<div class="tab-content" id="tab-quiz">
-<div class="ai-box">
-<div class="ai-avatar">🤖</div>
-<p>Перевіримо що ти вивчила! У тебе є <strong>3 підказки</strong> на весь тест. Не поспішай, думай уважно. Успіхів! 🍀</p>
-</div>
-
-<div class="score-bar">
-<span>Прогрес:</span>
-<span id="quizProgress">0 / 6</span>
-<div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;">
-<div id="quizProgressBar" style="height:100%;background:var(--accent);transition:width 0.4s;width:0%"></div>
-</div>
-<span class="score-item"><span class="score-dot correct"></span><span id="correctCount">0</span></span>
-<span class="score-item"><span class="score-dot wrong"></span><span id="wrongCount">0</span></span>
-<button class="btn btn-outline" style="padding:6px 14px;font-size:12px;" onclick="useHint()">💡 Підказка (<span id="hintCount">3</span>)</button>
-</div>
-
-<div class="quiz-card" id="quizCard">
-<p class="quiz-question" id="quizQuestion">Що означає це слово?</p>
-<div class="quiz-geo" id="quizWord"></div>
-<div class="quiz-options" id="quizOptions"></div>
-<div class="quiz-feedback" id="quizFeedback"></div>
-<div class="quiz-next" id="quizNext">
-<button class="btn" onclick="nextQuestion()">Наступне питання →</button>
-</div>
-</div>
-</div>
-
 </div>
 
 <script>
-// ALPHABET DATA
-const alphabet = [
-{geo:'ა',latin:'a',sound:'а'},{geo:'ბ',latin:'b',sound:'б'},{geo:'გ',latin:'g',sound:'г'},
-{geo:'დ',latin:'d',sound:'д'},{geo:'ე',latin:'e',sound:'е'},{geo:'ვ',latin:'v',sound:'в'},
-{geo:'ზ',latin:'z',sound:'з'},{geo:'თ',latin:'t',sound:'т'},{geo:'ი',latin:'i',sound:'і'},
-{geo:'კ',latin:'k',sound:'к'},{geo:'ლ',latin:'l',sound:'л'},{geo:'მ',latin:'m',sound:'м'},
-{geo:'ნ',latin:'n',sound:'н'},{geo:'ო',latin:'o',sound:'о'},{geo:'პ',latin:'p',sound:'п'},
-{geo:'ჟ',latin:'zh',sound:'ж'},{geo:'რ',latin:'r',sound:'р'},{geo:'ს',latin:'s',sound:'с'},
-{geo:'ტ',latin:'t',sound:'т'},{geo:'უ',latin:'u',sound:'у'},{geo:'ფ',latin:'ph',sound:'ф'},
-{geo:'ქ',latin:'q',sound:'к'},{geo:'ღ',latin:'gh',sound:'ğ'},{geo:'ყ',latin:'q',sound:'к'},
-{geo:'შ',latin:'sh',sound:'ш'},{geo:'ჩ',latin:'ch',sound:'ч'},{geo:'ც',latin:'ts',sound:'ц'},
-{geo:'ძ',latin:'dz',sound:'дз'},{geo:'წ',latin:'ts',sound:'ц'},{geo:'ჭ',latin:'ch',sound:'ч'},
-{geo:'ხ',latin:'kh',sound:'х'},{geo:'ჯ',latin:'j',sound:'дж'},{geo:'ჰ',latin:'h',sound:'г'}
-];
-
-// WORDS DATA
-const words = [
-{emoji:'👋',geo:'გამარჯობა',latin:'gamarjoba',ukr:'Привіт'},
-{emoji:'🙏',geo:'მადლობა',latin:'madloba',ukr:'Дякую'},
-{emoji:'✅',geo:'კი',latin:'ki',ukr:'Так'},
-{emoji:'❌',geo:'არა',latin:'ara',ukr:'Ні'},
-{emoji:'🍊',geo:'პორტოხალი',latin:'portoxali',ukr:'Апельсин'},
-{emoji:'🍎',geo:'ვაშლი',latin:'vashli',ukr:'Яблуко'},
-{emoji:'💧',geo:'წყალი',latin:'tsqali',ukr:'Вода'},
-{emoji:'🏠',geo:'სახლი',latin:'sakhli',ukr:'Будинок'},
-{emoji:'👨',geo:'კაცი',latin:'katsi',ukr:'Чоловік'},
-{emoji:'👩',geo:'ქალი',latin:'qali',ukr:'Жінка'},
-{emoji:'☀️',geo:'მზე',latin:'mze',ukr:'Сонце'},
-{emoji:'🌙',geo:'მთვარე',latin:'mtvare',ukr:'Місяць'},
-];
-
-// QUIZ DATA
-const quizData = [
-{word:'გამარჯობა',correct:'Привіт',options:['Привіт','Дякую','До побачення','Так']},
-{word:'მადლობა',correct:'Дякую',options:['Привіт','Дякую','Ні','Вода']},
-{word:'წყალი',correct:'Вода',options:['Вогонь','Земля','Вода','Повітря']},
-{word:'სახლი',correct:'Будинок',options:['Машина','Будинок','Дерево','Книга']},
-{word:'მე',correct:'Я',options:['Ти','Він','Я','Ми']},
-{word:'ნახვამდის',correct:'До побачення',options:['Привіт','Дякую','До побачення','Як справи?']},
-];
-
-let currentQuestion = 0;
-let correct = 0;
-let wrong = 0;
-let hints = 3;
-let answered = false;
-
-// RENDER ALPHABET
-function renderAlphabet() {
-const grid = document.getElementById('alphabetGrid');
-grid.innerHTML = alphabet.map((l,i) => `
-<div class="letter-card" id="letter-${i}" onclick="speakLetter('${l.sound}', ${i})">
-<div class="letter-geo">${l.geo}</div>
-<div class="letter-latin">${l.latin}</div>
-<div class="letter-sound">${l.sound}</div>
+const modals = {
+register: `
+<h2>Створи акаунт</h2>
+<p>Приєднуйся до Kartuli безкоштовно</p>
+<div class="form-group"><label>Ім'я</label><input type="text" placeholder="Твоє ім'я" /></div>
+<div class="form-group"><label>Електронна пошта</label><input type="email" placeholder="email@example.com" /></div>
+<div class="form-group"><label>Пароль</label><input type="password" placeholder="Мінімум 8 символів" /></div>
+<div class="modal-actions">
+<button class="btn" style="width:100%;padding:13px;">Зареєструватись</button>
+<div class="divider">або</div>
+<button class="btn-google">
+<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.1 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 20-9 20-20 0-1.3-.1-2.7-.4-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.1 18.9 12 24 12c3 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.5 35.6 26.9 36 24 36c-5.2 0-9.6-2.9-11.3-7.1l-6.5 5C9.6 39.6 16.3 44 24 44z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.8 2.3-2.3 4.2-4.3 5.5l6.2 5.2C41.3 35.4 44 30.1 44 24c0-1.3-.1-2.7-.4-4z"/></svg>
+Увійти через Google
+</button>
+<p style="text-align:center;font-size:13px;color:#666;">Вже є акаунт? <a href="#" onclick="openModal('login')" style="color:var(--accent);">Увійти</a></p>
 </div>
-`).join('');
-}
-
-// RENDER WORDS
-function renderWords() {
-const grid = document.getElementById('wordsGrid');
-grid.innerHTML = words.map((w,i) => `
-<div class="word-card">
-<button class="play-btn" onclick="speakWord('${w.ukr}')">🔊</button>
-<span class="emoji">${w.emoji}</span>
-<div class="geo">${w.geo}</div>
-<div class="latin">${w.latin}</div>
-<div class="ukr">${w.ukr}</div>
+`,
+login: `
+<h2>Вітаємо назад</h2>
+<p>Продовжуй вивчати грузинську</p>
+<div class="form-group"><label>Електронна пошта</label><input type="email" placeholder="email@example.com" /></div>
+<div class="form-group"><label>Пароль</label><input type="password" placeholder="Твій пароль" /></div>
+<div class="modal-actions">
+<button class="btn" style="width:100%;padding:13px;">Увійти</button>
+<div class="divider">або</div>
+<button class="btn-google">
+<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.1 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 20-9 20-20 0-1.3-.1-2.7-.4-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.1 18.9 12 24 12c3 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.5 35.6 26.9 36 24 36c-5.2 0-9.6-2.9-11.3-7.1l-6.5 5C9.6 39.6 16.3 44 24 44z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.8 2.3-2.3 4.2-4.3 5.5l6.2 5.2C41.3 35.4 44 30.1 44 24c0-1.3-.1-2.7-.4-4z"/></svg>
+Увійти через Google
+</button>
+<p style="text-align:center;font-size:13px;color:#666;">Немає акаунту? <a href="#" onclick="openModal('register')" style="color:var(--accent);">Зареєструватись</a></p>
 </div>
-`).join('');
+`
+};
+
+function openModal(type) {
+document.getElementById('modal-content').innerHTML = modals[type];
+document.getElementById('modal-overlay').classList.add('open');
 }
 
-// SPEAK
-function speakLetter(sound, idx) {
-speak(sound);
-document.getElementById('letter-'+idx).classList.add('played');
+function closeModal() {
+document.getElementById('modal-overlay').classList.remove('open');
 }
 
-function speakWord(text) { speak(text); }
-
-function speak(text) {
-if ('speechSynthesis' in window) {
-const u = new SpeechSynthesisUtterance(text);
-u.lang = 'uk-UA';
-speechSynthesis.speak(u);
-}
+function closeModalOutside(e) {
+if (e.target === document.getElementById('modal-overlay')) closeModal();
 }
 
-function playAllLetters() {
-alphabet.forEach((l,i) => {
-setTimeout(() => speakLetter(l.sound, i), i * 600);
-});
+function goToLevel(level) {
+window.location.href = level.toLowerCase() + '.html';
 }
-
-// QUIZ
-function renderQuestion() {
-if (currentQuestion >= quizData.length) {
-showResult();
-return;
-}
-answered = false;
-const q = quizData[currentQuestion];
-document.getElementById('quizWord').textContent = q.word;
-document.getElementById('quizProgress').textContent = `${currentQuestion+1} / ${quizData.length}`;
-document.getElementById('quizProgressBar').style.width = `${(currentQuestion/quizData.length)*100}%`;
-
-const opts = [...q.options].sort(() => Math.random() - 0.5);
-document.getElementById('quizOptions').innerHTML = opts.map(o => `
-<button class="quiz-option" onclick="checkAnswer('${o}', '${q.correct}', this)">${o}</button>
-`).join('');
-
-document.getElementById('quizFeedback').className = 'quiz-feedback';
-document.getElementById('quizFeedback').textContent = '';
-document.getElementById('quizNext').className = 'quiz-next';
-}
-
-function checkAnswer(selected, correct_ans, btn) {
-if (answered) return;
-answered = true;
-
-const feedback = document.getElementById('quizFeedback');
-const allBtns = document.querySelectorAll('.quiz-option');
-
-allBtns.forEach(b => {
-if (b.textContent === correct_ans) b.classList.add('correct');
-});
-
-if (selected === correct_ans) {
-btn.classList.add('correct');
-feedback.textContent = '✅ Правильно! Чудово!';
-feedback.className = 'quiz-feedback show correct';
-correct++;
-document.getElementById('correctCount').textContent = correct;
-} else {
-btn.classList.add('wrong');
-feedback.textContent = `❌ Неправильно. Правильна відповідь: ${correct_ans}`;
-feedback.className = 'quiz-feedback show wrong';
-wrong++;
-document.getElementById('wrongCount').textContent = wrong;
-}
-
-document.getElementById('quizNext').className = 'quiz-next show';
-}
-
-function nextQuestion() {
-currentQuestion++;
-renderQuestion();
-}
-
-function useHint() {
-if (hints <= 0) { alert('Підказки закінчились!'); return; }
-if (answered) return;
-hints--;
-document.getElementById('hintCount').textContent = hints;
-
-const q = quizData[currentQuestion];
-const allBtns = document.querySelectorAll('.quiz-option');
-let removed = 0;
-allBtns.forEach(b => {
-if (removed < 2 && b.textContent !== q.correct) {
-b.style.opacity = '0.3';
-b.style.pointerEvents = 'none';
-removed++;
-}
-});
-}
-
-function showResult() {
-const pct = Math.round((correct / quizData.length) * 100);
-document.getElementById('quizCard').innerHTML = `
-<div style="text-align:center;padding:20px;">
-<div style="font-size:48px;margin-bottom:16px;">${pct >= 70 ? '🎉' : '📚'}</div>
-<h2 style="font-size:24px;margin-bottom:8px;">${pct >= 70 ? 'Вітаємо!' : 'Продовжуй вчитися!'}</h2>
-<p style="color:var(--text-muted);margin-bottom:24px;">Результат: <strong>${correct} з ${quizData.length}</strong> (${pct}%)</p>
-${pct >= 70
-? `<p style="color:var(--success);font-weight:600;margin-bottom:20px;">✅ Ти успішно пройшла урок A1!</p>`
-: `<p style="color:var(--error);font-weight:600;margin-bottom:20px;">Повтори матеріал і спробуй ще раз.</p>`
-}
-<button class="btn" onclick="restartQuiz()">Пройти ще раз</button>
-</div>
-`;
-}
-
-function restartQuiz() {
-currentQuestion = 0; correct = 0; wrong = 0; hints = 3; answered = false;
-document.getElementById('correctCount').textContent = 0;
-document.getElementById('wrongCount').textContent = 0;
-document.getElementById('hintCount').textContent = 3;
-document.getElementById('quizCard').innerHTML = `
-<p class="quiz-question" id="quizQuestion">Що означає це слово?</p>
-<div class="quiz-geo" id="quizWord"></div>
-<div class="quiz-options" id="quizOptions"></div>
-<div class="quiz-feedback" id="quizFeedback"></div>
-<div class="quiz-next" id="quizNext"><button class="btn" onclick="nextQuestion()">Наступне питання →</button></div>
-`;
-renderQuestion();
-}
-
-// TABS
-function switchTab(name) {
-document.querySelectorAll('.tab').forEach((t,i) => {
-const names = ['lessons','alphabet','words','grammar','quiz'];
-t.classList.toggle('active', names[i] === name);
-});
-document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-document.getElementById('tab-'+name).classList.add('active');
-
-if (name === 'quiz') renderQuestion();
-}
-
-// INIT
-renderAlphabet();
-renderWords();
 </script>
 </body>
 </html>
+
+
