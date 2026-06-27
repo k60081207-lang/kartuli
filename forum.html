@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kartuli — Форум</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+<style>
+:root {
+--bg: #F5F5F5;
+--surface: #FFFFFF;
+--text: #111111;
+--text-muted: #666666;
+--accent: #2C3E8C;
+--accent-light: #E8ECFA;
+--border: #E0E0E0;
+--radius: 12px;
+--transition: 0.3s ease;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+nav {
+background: var(--surface);
+border-bottom: 1px solid var(--border);
+padding: 0 24px;
+height: 64px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+position: sticky;
+top: 0;
+z-index: 100;
+}
+
+.logo { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--accent); }
+.logo span { background: var(--accent); color: #fff; border-radius: 6px; padding: 2px 8px; margin-right: 6px; }
+.nav-back { color: var(--text-muted); font-size: 14px; text-decoration: none; padding: 8px 12px; border-radius: 8px; transition: background var(--transition); }
+.nav-back:hover { background: var(--accent-light); color: var(--accent); }
+
+.container { max-width: 800px; margin: 0 auto; padding: 40px 24px; }
+
+.page-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 32px;
+flex-wrap: wrap;
+gap: 16px;
+}
+
+.page-title { font-family: 'Playfair Display', serif; font-size: 32px; }
+.page-sub { color: var(--text-muted); font-size: 15px; margin-top: 6px; }
+
+.btn {
+background: var(--accent);
+color: #fff;
+border: none;
+border-radius: 8px;
+padding: 12px 24px;
+font-size: 14px;
+font-weight: 500;
+cursor: pointer;
+transition: opacity var(--transition);
+}
+.btn:hover { opacity: 0.88; }
+.btn-outline {
+background: transparent;
+color: var(--accent);
+border: 1.5px solid var(--accent);
+}
+.btn-outline:hover { background: var(--accent-light); opacity: 1; }
+
+/* CATEGORIES */
+.categories {
+display: flex;
+gap: 8px;
+flex-wrap: wrap;
+margin-bottom: 24px;
+}
+
+.cat-btn {
+padding: 8px 16px;
+border: 1.5px solid var(--border);
+border-radius: 20px;
+background: var(--surface);
+font-size: 13px;
+font-weight: 500;
+cursor: pointer;
+transition: all var(--transition);
+}
+
+.cat-btn:hover { border-color: var(--accent); color: var(--accent); }
+.cat-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* NEW POST FORM */
+.new-post-form {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+padding: 24px;
+margin-bottom: 24px;
+display: none;
+}
+
+.new-post-form.open { display: block; }
+.new-post-form h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+
+.form-group { margin-bottom: 14px; }
+.form-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; }
+
+.form-input {
+width: 100%;
+padding: 11px 14px;
+border: 1.5px solid var(--border);
+border-radius: 8px;
+font-size: 14px;
+font-family: 'Inter', sans-serif;
+outline: none;
+transition: border-color var(--transition);
+}
+
+.form-input:focus { border-color: var(--accent); }
+
+textarea.form-input { min-height: 100px; resize: vertical; }
+
+.form-actions { display: flex; gap: 10px; margin-top: 16px; }
+
+/* POSTS */
+.posts-list { display: flex; flex-direction: column; gap: 16px; }
+
+.post-card {
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: var(--radius);
+padding: 24px;
+transition: border-color var(--transition), box-shadow var(--transition);
+cursor: pointer;
+}
+
+.post-card:hover { border-color: var(--accent); box-shadow: 0 4px 16px rgba(44,62,140,0.08); }
+
+.post-header {
+display: flex;
+align-items: flex-start;
+gap: 12px;
+margin-bottom: 12px;
+}
+
+.post-avatar {
+width: 40px;
+height: 40px;
+border-radius: 50%;
+background: var(--accent-light);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 18px;
+flex-shrink: 0;
+}
+
+.post-meta { flex: 1; }
+.post-author { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.post-time { font-size: 12px; color: var(--text-muted); }
+
+.post-category {
+display: inline-block;
+background: var(--accent-light);
+color: var(--accent);
+font-size: 11px;
+font-weight: 600;
+padding: 3px 10px;
+border-radius: 20px;
+}
+
+.post-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.post-body { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px; }
+
+.post-footer {
+display: flex;
+align-items: center;
+gap: 16px;
+font-size: 13px;
+color: var(--text-muted);
+}
+
+.post-stat { display: flex; align-items: center; gap: 5px; cursor: pointer; transition: color var(--transition); }
+.post-stat:hover { color: var(--accent); }
+
+/* COMMENT SECTION */
+.comment-section {
+display: none;
+margin-top: 20px;
+border-top: 1px solid var(--border);
+padding-top: 20px;
+}
+
+.comment-section.open { display: block; }
+
+.comment {
+display: flex;
+gap: 10px;
+margin-bottom: 16px;
+}
+
+.comment-avatar {
+width: 32px;
+height: 32px;
+border-radius: 50%;
+background: var(--bg);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 14px;
+flex-shrink: 0;
+}
+
+.comment-bubble {
+background: var(--bg);
+border-radius: 10px;
+padding: 12px 16px;
+flex: 1;
+}
+
+.comment-author { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.comment-text { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+.comment-input-row {
+display: flex;
+gap: 10px;
+margin-top: 12px;
+}
+
+.comment-input {
+flex: 1;
+padding: 10px 14px;
+border: 1.5px solid var(--border);
+border-radius: 8px;
+font-size: 13px;
+font-family: 'Inter', sans-serif;
+outline: none;
+transition: border-color var(--transition);
+}
+
+.comment-input:focus { border-color: var(--accent); }
+
+/* PINNED */
+.pinned-badge {
+display: inline-flex;
+align-items: center;
+gap: 4px;
+background: #FFF3E0;
+color: #E65100;
+font-size: 11px;
+font-weight: 600;
+padding: 3px 10px;
+border-radius: 20px;
+margin-bottom: 8px;
+}
+
+/* SPAM FILTER */
+.spam-warning {
+background: #FFEBEE;
+border: 1px solid #FFCDD2;
+border-radius: 8px;
+padding: 12px 16px;
+font-size: 13px;
+color: #C62828;
+display: none;
+margin-top: 8px;
+}
+
+.spam-warning.show { display: block; }
+</style>
+</head>
+<body>
+
+<nav>
+<div class="logo"><span>კ</span> Kartuli</div>
+<a class="nav-back" href="index.html">← Назад</a>
+</nav>
+
+<div class="container">
+
+<div class="page-header">
+<div>
+<h1 class="page-title">💬 Форум</h1>
+<p class="page-sub">Спілкуйся з іншими учнями грузинської мови</p>
+</div>
+<button class="btn" onclick="toggleNewPost()">+ Нова тема</button>
+</div>
+
+<!-- CATEGORIES -->
+<div class="categories">
+<button class="cat-btn active" onclick="filterPosts('all', this)">Всі теми</button>
+<button class="cat-btn" onclick="filterPosts('questions', this)">❓ Питання</button>
+<button class="cat-btn" onclick="filterPosts('tips', this)">💡 Поради</button>
+<button class="cat-btn" onclick="filterPosts('practice', this)">🗣️ Практика</button>
+<button class="cat-btn" onclick="filterPosts('culture', this)">🇬🇪 Культура</button>
+</div>
+
+<!-- NEW POST FORM -->
+<div class="new-post-form" id="newPostForm">
+<h3>✍️ Нова тема</h3>
+<div class="form-group">
+<label>Твоє ім'я</label>
+<input class="form-input" id="postAuthor" placeholder="Як тебе звати?" />
+</div>
+<div class="form-group">
+<label>Категорія</label>
+<select class="form-input" id="postCategory">
+<option value="questions">❓ Питання</option>
+<option value="tips">💡 Поради</option>
+<option value="practice">🗣️ Практика</option>
+<option value="culture">🇬🇪 Культура</option>
+</select>
+</div>
+<div class="form-group">
+<label>Заголовок</label>
+<input class="form-input" id="postTitle" placeholder="Тема обговорення..." />
+</div>
+<div class="form-group">
+<label>Текст</label>
+<textarea class="form-input" id="postBody" placeholder="Напиши своє питання або думку..."></textarea>
+<div class="spam-warning" id="spamWarning">⚠️ Схоже на спам. Будь ласка, пиши по темі грузинської мови!</div>
+</div>
+<div class="form-actions">
+<button class="btn" onclick="submitPost()">Опублікувати</button>
+<button class="btn btn-outline" onclick="toggleNewPost()">Скасувати</button>
+</div>
+</div>
+
+<!-- POSTS -->
+<div class="posts-list" id="postsList"></div>
+
+</div>
+
+<script>
+const spamWords = ['казино', 'заробіток', 'крипто', 'bitcoin', 'viagra', 'click here', 'buy now', 'free money', 'заробляй'];
+
+const initialPosts = [
+{
+id: 1,
+author: 'Оля',
+avatar: '👩',
+category: 'questions',
+title: 'Як правильно вимовляти букву ყ?',
+body: 'Ніяк не можу зрозуміти різницю між კ і ყ. Хтось може пояснити?',
+time: '2 години тому',
+likes: 12,
+pinned: true,
+comments: [
+{ author: 'Марта', avatar: '👩‍🦰', text: 'ყ це абруптивний звук — вимовляється різкіше, ніж к. Спробуй різко "клацнути" горлом!', time: '1 година тому' },
+{ author: 'Kartuli ШІ', avatar: '🤖', text: 'Правильно! ყ (qar) це глоталізований звук. Практикуй слово ყავა (qava) — кава!', time: '45 хв тому' },
+]
+},
+{
+id: 2,
+author: 'Дмитро',
+avatar: '👨',
+category: 'tips',
+title: 'Порада: вчи слова через грузинські пісні!',
+body: 'Я відкрив для себе що слухати грузинські пісні — найкращий спосіб запам\'ятати слова. Рекомендую пісні Нані Брегвадзе!',
+time: '5 годин тому',
+likes: 28,
+pinned: false,
+comments: [
+{ author: 'Аня', avatar: '👧', text: 'Дякую! А ще добре дивитись грузинські серіали з субтитрами!', time: '4 години тому' },
+]
+},
+{
+id: 3,
+author: 'Катя',
+avatar: '👩‍🦳',
+category: 'practice',
+title: 'Шукаю партнера для практики грузинської!',
+body: 'Я на рівні A2, хочу практикувати розмовну грузинську. Хтось бажає разом вчитися?',
+time: '1 день тому',
+likes: 15,
+pinned: false,
+comments: []
+},
+{
+id: 4,
+author: 'Іван',
+avatar: '👨‍🦱',
+category: 'culture',
+title: 'Цікавий факт про грузинське застілля!',
+body: 'Дізнався що в Грузії є традиція "супра" — це особливий бенкет з тостами. Тамада веде застілля і говорить тости. Слово "тамада" взагалі прийшло до нас з грузинської! 🇬🇪',
+time: '2 дні тому',
+likes: 42,
+pinned: false,
+comments: [
+{ author: 'Оля', avatar: '👩', text: 'Дуже цікаво! Я також чула що грузини дуже гостинні люди!', time: '1 день тому' },
+{ author: 'Марко', avatar: '👦', text: 'Так! І грузинська кухня неймовірна — хінкалі, хачапурі! 😋', time: '1 день тому' },
+]
+},
+];
+
+let posts = [...initialPosts];
+let currentFilter = 'all';
+
+function renderPosts() {
+const filtered = currentFilter === 'all' ? posts : posts.filter(p => p.category === currentFilter);
+const sorted = [...filtered].sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
+
+document.getElementById('postsList').innerHTML = sorted.map(p => `
+<div class="post-card" id="post-${p.id}">
+${p.pinned ? '<div class="pinned-badge">📌 Закріплено</div>' : ''}
+<div class="post-header">
+<div class="post-avatar">${p.avatar}</div>
+<div class="post-meta">
+<div class="post-author">${p.author}</div>
+<div class="post-time">${p.time}</div>
+</div>
+<span class="post-category">${getCatLabel(p.category)}</span>
+</div>
+<div class="post-title">${p.title}</div>
+<div class="post-body">${p.body}</div>
+<div class="post-footer">
+<span class="post-stat" onclick="likePost(${p.id})">❤️ ${p.likes}</span>
+<span class="post-stat" onclick="toggleComments(${p.id})">💬 ${p.comments.length} коментарів</span>
+</div>
+<div class="comment-section" id="comments-${p.id}">
+${p.comments.map(c => `
+<div class="comment">
+<div class="comment-avatar">${c.avatar}</div>
+<div class="comment-bubble">
+<div class="comment-author">${c.author} · <span style="font-weight:400;color:var(--text-muted)">${c.time}</span></div>
+<div class="comment-text">${c.text}</div>
+</div>
+</div>
+`).join('')}
+<div class="comment-input-row">
+<input class="comment-input" id="comment-input-${p.id}" placeholder="Написати коментар..." onkeydown="if(event.key==='Enter')addComment(${p.id})" />
+<button class="btn" style="padding:10px 16px;font-size:13px;" onclick="addComment(${p.id})">Надіслати</button>
+</div>
+</div>
+</div>
+`).join('');
+}
+
+function getCatLabel(cat) {
+const labels = { questions: '❓ Питання', tips: '💡 Поради', practice: '🗣️ Практика', culture: '🇬🇪 Культура' };
+return labels[cat] || cat;
+}
+
+function filterPosts(filter, btn) {
+currentFilter = filter;
+document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+renderPosts();
+}
+
+function likePost(id) {
+const post = posts.find(p => p.id === id);
+if (post) { post.likes++; renderPosts(); }
+}
+
+function toggleComments(id) {
+const section = document.getElementById(`comments-${id}`);
+section.classList.toggle('open');
+}
+
+function addComment(postId) {
+const input = document.getElementById(`comment-input-${postId}`);
+const text = input.value.trim();
+if (!text) return;
+
+if (isSpam(text)) {
+alert('⚠️ Схоже на спам! Будь ласка, пиши по темі грузинської мови.');
+return;
+}
+
+const post = posts.find(p => p.id === postId);
+if (post) {
+post.comments.push({ author: 'Ти', avatar: '👤', text, time: 'щойно' });
+renderPosts();
+setTimeout(() => {
+const section = document.getElementById(`comments-${postId}`);
+if (section) section.classList.add('open');
+}, 100);
+}
+}
+
+function toggleNewPost() {
+document.getElementById('newPostForm').classList.toggle('open');
+}
+
+function isSpam(text) {
+const lower = text.toLowerCase();
+return spamWords.some(w => lower.includes(w));
+}
+
+function submitPost() {
+const author = document.getElementById('postAuthor').value.trim();
+const category = document.getElementById('postCategory').value;
+const title = document.getElementById('postTitle').value.trim();
+const body = document.getElementById('postBody').value.trim();
+const warning = document.getElementById('spamWarning');
+
+if (!author || !title || !body) {
+alert('Будь ласка, заповни всі поля!');
+return;
+}
+
+if (isSpam(title) || isSpam(body)) {
+warning.classList.add('show');
+return;
+}
+
+warning.classList.remove('show');
+
+const newPost = {
+id: Date.now(),
+author,
+avatar: '👤',
+category,
+title,
+body,
+time: 'щойно',
+likes: 0,
+pinned: false,
+comments: []
+};
+
+posts.unshift(newPost);
+renderPosts();
+toggleNewPost();
+
+document.getElementById('postAuthor').value = '';
+document.getElementById('postTitle').value = '';
+document.getElementById('postBody').value = '';
+}
+
+renderPosts();
+</script>
+</body>
+</html>
