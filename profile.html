@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kartuli — Профіль</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+<style>
+:root {
+--bg: #F5F5F5;
+--surface: #FFFFFF;
+--text: #111111;
+--text-muted: #666666;
+--accent: #2C3E8C;
+--accent-light: #E8ECFA;
+--border: #E0E0E0;
+--success: #2E7D32;
+--success-light: #E8F5E9;
+--radius: 12px;
+--transition: 0.3s ease;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+nav {
+background: var(--surface);
+border-bottom: 1px solid var(--border);
+padding: 0 24px;
+height: 64px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+position: sticky;
+top: 0;
+z-index: 100;
+}
+
+.logo { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--accent); }
+.logo span { background: var(--accent); color: #fff; border-radius: 6px; padding: 2px 8px; margin-right: 6px; }
+.nav-back { color: var(--text-muted); font-size: 14px; text-decoration: none; padding: 8px 12px; border-radius: 8px; transition: background var(--transition); }
+.nav-back:hover { background: var(--accent-light); color: var(--accent); }
+
+.container { max-width: 800px; margin: 0 auto; padding: 40px 24px; }
+
+/* PROFILE HERO */
+.profile-hero {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: 16px;
+padding: 32px;
+margin-bottom: 24px;
+display: flex;
+gap: 24px;
+align-items: center;
+flex-wrap: wrap;
+}
+
+.avatar {
+width: 80px;
+height: 80px;
+border-radius: 50%;
+background: var(--accent);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 36px;
+flex-shrink: 0;
+cursor: pointer;
+transition: opacity var(--transition);
+}
+
+.avatar:hover { opacity: 0.85; }
+
+.profile-info { flex: 1; }
+.profile-name { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 4px; }
+.profile-level { font-size: 14px; color: var(--text-muted); margin-bottom: 12px; }
+
+.level-badge {
+display: inline-block;
+background: var(--accent-light);
+color: var(--accent);
+font-size: 12px;
+font-weight: 700;
+padding: 4px 12px;
+border-radius: 20px;
+}
+
+.xp-bar {
+margin-top: 12px;
+}
+
+.xp-label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; display: flex; justify-content: space-between; }
+
+.xp-track {
+height: 8px;
+background: var(--border);
+border-radius: 4px;
+overflow: hidden;
+}
+
+.xp-fill {
+height: 100%;
+background: var(--accent);
+border-radius: 4px;
+transition: width 1s ease;
+}
+
+/* STATS */
+.stats-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+gap: 12px;
+margin-bottom: 24px;
+}
+
+.stat-card {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+padding: 20px 16px;
+text-align: center;
+}
+
+.stat-icon { font-size: 28px; margin-bottom: 8px; }
+.stat-value { font-size: 28px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+.stat-label { font-size: 12px; color: var(--text-muted); }
+
+/* STREAK */
+.streak-card {
+background: linear-gradient(135deg, #FF6B35, #FF8C42);
+border-radius: var(--radius);
+padding: 24px;
+color: #fff;
+margin-bottom: 24px;
+display: flex;
+align-items: center;
+gap: 20px;
+}
+
+.streak-fire { font-size: 48px; }
+.streak-info h3 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+.streak-info p { font-size: 14px; opacity: 0.9; }
+
+.streak-days {
+margin-left: auto;
+text-align: center;
+}
+
+.streak-num { font-size: 48px; font-weight: 700; line-height: 1; }
+.streak-label { font-size: 12px; opacity: 0.9; }
+
+/* ACHIEVEMENTS */
+.section-title {
+font-size: 13px;
+font-weight: 600;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--text-muted);
+margin-bottom: 16px;
+}
+
+.badges-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+gap: 12px;
+margin-bottom: 24px;
+}
+
+.badge-card {
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: var(--radius);
+padding: 20px 16px;
+text-align: center;
+transition: all var(--transition);
+}
+
+.badge-card.earned { border-color: var(--accent); background: var(--accent-light); }
+.badge-card.locked { opacity: 0.4; }
+
+.badge-icon { font-size: 32px; margin-bottom: 8px; }
+.badge-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.badge-desc { font-size: 11px; color: var(--text-muted); }
+
+/* PROGRESS */
+.progress-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+
+.progress-item {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+padding: 18px 20px;
+}
+
+.progress-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 10px;
+}
+
+.progress-label { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.progress-pct { font-size: 13px; color: var(--text-muted); }
+
+.progress-track {
+height: 6px;
+background: var(--border);
+border-radius: 3px;
+overflow: hidden;
+}
+
+.progress-fill {
+height: 100%;
+background: var(--accent);
+border-radius: 3px;
+transition: width 1s ease;
+}
+
+.progress-fill.done { background: var(--success); }
+
+/* REMINDERS */
+.reminder-card {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+padding: 24px;
+margin-bottom: 24px;
+}
+
+.reminder-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+
+.reminder-row {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 12px 0;
+border-bottom: 1px solid var(--border);
+}
+
+.reminder-row:last-child { border-bottom: none; }
+
+.reminder-label { font-size: 14px; font-weight: 500; }
+.reminder-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+/* TOGGLE */
+.toggle {
+width: 44px;
+height: 24px;
+background: var(--border);
+border-radius: 12px;
+position: relative;
+cursor: pointer;
+transition: background var(--transition);
+flex-shrink: 0;
+}
+
+.toggle.on { background: var(--accent); }
+
+.toggle::after {
+content: '';
+width: 18px;
+height: 18px;
+background: #fff;
+border-radius: 50%;
+position: absolute;
+top: 3px;
+left: 3px;
+transition: transform var(--transition);
+box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+
+.toggle.on::after { transform: translateX(20px); }
+
+/* TIME PICKER */
+.time-select {
+padding: 8px 12px;
+border: 1.5px solid var(--border);
+border-radius: 8px;
+font-size: 13px;
+font-family: 'Inter', sans-serif;
+outline: none;
+transition: border-color var(--transition);
+background: var(--surface);
+}
+
+.time-select:focus { border-color: var(--accent); }
+
+/* SETTINGS */
+.settings-card {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+padding: 24px;
+margin-bottom: 24px;
+}
+
+.settings-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+
+.settings-row {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 12px 0;
+border-bottom: 1px solid var(--border);
+}
+
+.settings-row:last-child { border-bottom: none; }
+
+.settings-label { font-size: 14px; font-weight: 500; }
+.settings-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+select.settings-select {
+padding: 8px 12px;
+border: 1.5px solid var(--border);
+border-radius: 8px;
+font-size: 13px;
+font-family: 'Inter', sans-serif;
+outline: none;
+background: var(--surface);
+}
+
+.btn {
+background: var(--accent);
+color: #fff;
+border: none;
+border-radius: 8px;
+padding: 12px 24px;
+font-size: 14px;
+font-weight: 500;
+cursor: pointer;
+transition: opacity var(--transition);
+}
+
+.btn:hover { opacity: 0.88; }
+
+.btn-danger {
+background: #C62828;
+}
+
+/* CERTIFICATE */
+.certificate {
+background: linear-gradient(135deg, var(--accent) 0%, #1a2666 100%);
+border-radius: 16px;
+padding: 32px;
+color: #fff;
+text-align: center;
+margin-bottom: 24px;
+position: relative;
+overflow: hidden;
+}
+
+.certificate::before {
+content: '🇬🇪';
+position: absolute;
+font-size: 120px;
+opacity: 0.05;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+}
+
+.cert-title { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 8px; }
+.cert-sub { font-size: 14px; opacity: 0.8; margin-bottom: 20px; }
+.cert-level { font-size: 48px; font-weight: 700; margin-bottom: 8px; }
+.cert-name { font-size: 18px; margin-bottom: 20px; }
+
+.cert-share {
+background: rgba(255,255,255,0.2);
+border: 1.5px solid rgba(255,255,255,0.4);
+color: #fff;
+border-radius: 8px;
+padding: 10px 20px;
+font-size: 14px;
+font-weight: 500;
+cursor: pointer;
+transition: background var(--transition);
+}
+
+.cert-share:hover { background: rgba(255,255,255,0.3); }
+</style>
+</head>
+<body>
+
+<nav>
+<div class="logo"><span>კ</span> Kartuli</div>
+<a class="nav-back" href="index.html">← Назад</a>
+</nav>
+
+<div class="container">
+
+<!-- PROFILE HERO -->
+<div class="profile-hero">
+<div class="avatar" id="avatarEl" onclick="changeAvatar()">👤</div>
+<div class="profile-info">
+<div class="profile-name" id="profileName">Учень Kartuli</div>
+<div class="profile-level">Вивчає грузинську · <span class="level-badge" id="currentLevel">A1</span></div>
+<div class="xp-bar">
+<div class="xp-label">
+<span>Досвід</span>
+<span id="xpText">120 / 500 XP</span>
+</div>
+<div class="xp-track">
+<div class="xp-fill" id="xpFill" style="width: 24%"></div>
+</div>
+</div>
+</div>
+<button class="btn" onclick="editProfile()">✏️ Редагувати</button>
+</div>
+
+<!-- STREAK -->
+<div class="streak-card">
+<div class="streak-fire">🔥</div>
+<div class="streak-info">
+<h3>Серія занять!</h3>
+<p>Продовжуй займатись щодня!</p>
+</div>
+<div class="streak-days">
+<div class="streak-num" id="streakNum">3</div>
+<div class="streak-label">дні поспіль</div>
+</div>
+</div>
+
+<!-- STATS -->
+<p class="section-title">Статистика</p>
+<div class="stats-grid">
+<div class="stat-card">
+<div class="stat-icon">📚</div>
+<div class="stat-value" id="wordsLearned">47</div>
+<div class="stat-label">слів вивчено</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">⏱️</div>
+<div class="stat-value" id="minutesTotal">180</div>
+<div class="stat-label">хвилин навчання</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">✅</div>
+<div class="stat-value" id="testsTotal">8</div>
+<div class="stat-label">тестів пройдено</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">🎮</div>
+<div class="stat-value" id="gamesTotal">15</div>
+<div class="stat-label">ігор зіграно</div>
+</div>
+</div>
+
+<!-- PROGRESS BY LEVEL -->
+<p class="section-title">Прогрес по рівнях</p>
+<div class="progress-list">
+<div class="progress-item">
+<div class="progress-header">
+<span class="progress-label">✅ A1 — Початківець</span>
+<span class="progress-pct">65%</span>
+</div>
+<div class="progress-track"><div class="progress-fill" style="width:65%"></div></div>
+</div>
+<div class="progress-item">
+<div class="progress-header">
+<span class="progress-label">🔒 A2 — Елементарний</span>
+<span class="progress-pct">0%</span>
+</div>
+<div class="progress-track"><div class="progress-fill" style="width:0%"></div></div>
+</div>
+<div class="progress-item">
+<div class="progress-header">
+<span class="progress-label">🔒 B1 — Середній</span>
+<span class="progress-pct">0%</span>
+</div>
+<div class="progress-track"><div class="progress-fill" style="width:0%"></div></div>
+</div>
+<div class="progress-item">
+<div class="progress-header">
+<span class="progress-label">🔒 B2 — Вище середнього</span>
+<span class="progress-pct">0%</span>
+</div>
+<div class="progress-track"><div class="progress-fill" style="width:0%"></div></div>
+</div>
+<div class="progress-item">
+<div class="progress-header">
+<span class="progress-label">🔒 C1 — Просунутий</span>
+<span class="progress-pct">0%</span>
+</div>
+<div class="progress-track"><div class="progress-fill" style="width:0%"></div></div>
+</div>
+<div class="progress-item">
+<div class="progress-header">
+<span class="progress-label">🔒 C2 — Досконалий</span>
+<span class="progress-pct">0%</span>
+</div>
+<div class="progress-track"><div class="progress-fill" style="width:0%"></div></div>
+</div>
+</div>
+
+<!-- ACHIEVEMENTS -->
+<p class="section-title">Досягнення</p>
+<div class="badges-grid">
+<div class="badge-card earned">
+<div class="badge-icon">🌟</div>
+<div class="badge-name">Перший крок</div>
+<div class="badge-desc">Розпочав навчання</div>
+</div>
+<div class="badge-card earned">
+<div class="badge-icon">🔤</div>
+<div class="badge-name">Алфавіт</div>
+<div class="badge-desc">Вивчив алфавіт</div>
+</div>
+<div class="badge-card earned">
+<div class="badge-icon">🔥</div>
+<div class="badge-name">3 дні поспіль</div>
+<div class="badge-desc">Серія 3 дні</div>
+</div>
+<div class="badge-card locked">
+<div class="badge-icon">🏆</div>
+<div class="badge-name">Рівень A1</div>
+<div class="badge-desc">Завершити A1</div>
+</div>
+<div class="badge-card locked">
+<div class="badge-icon">💬</div>
+<div class="badge-name">Перший діалог</div>
+<div class="badge-desc">Провести діалог з ШІ</div>
+</div>
+<div class="badge-card locked">
+<div class="badge-icon">🎮</div>
+<div class="badge-name">Гравець</div>
+<div class="badge-desc">Зіграти 20 ігор</div>
+</div>
+<div class="badge-card locked">
+<div class="badge-icon">📚</div>
+<div class="badge-name">100 слів</div>
+<div class="badge-desc">Вивчити 100 слів</div>
+</div>
+<div class="badge-card locked">
+<div class="badge-icon">👑</div>
+<div class="badge-name">Майстер</div>
+<div class="badge-desc">Досягти рівня C2</div>
+</div>
+</div>
+
+<!-- CERTIFICATE -->
+<p class="section-title">Сертифікат</p>
+<div class="certificate">
+<div class="cert-title">🏅 Сертифікат Kartuli</div>
+<div class="cert-sub">Завершіть рівень A1 щоб отримати сертифікат</div>
+<div class="cert-level">A1</div>
+<div class="cert-name" id="certName">Учень Kartuli</div>
+<button class="cert-share" onclick="shareCert()">📤 Поділитися в соцмережах</button>
+</div>
+
+<!-- REMINDERS -->
+<div class="reminder-card">
+<h3>🔔 Нагадування</h3>
+<div class="reminder-row">
+<div>
+<div class="reminder-label">Ранкове заняття</div>
+<div class="reminder-sub">Нагадати вранці</div>
+</div>
+<div style="display:flex;align-items:center;gap:12px;">
+<select class="time-select" id="morningTime">
+<option>07:00</option>
+<option selected>08:00</option>
+<option>09:00</option>
+<option>10:00</option>
+</select>
+<div class="toggle on" id="morningToggle" onclick="toggleReminder('morning')"></div>
+</div>
+</div>
+<div class="reminder-row">
+<div>
+<div class="reminder-label">Вечірнє заняття</div>
+<div class="reminder-sub">Нагадати ввечері</div>
+</div>
+<div style="display:flex;align-items:center;gap:12px;">
+<select class="time-select" id="eveningTime">
+<option>18:00</option>
+<option>19:00</option>
+<option selected>20:00</option>
+<option>21:00</option>
+</select>
+<div class="toggle on" id="eveningToggle" onclick="toggleReminder('evening')"></div>
+</div>
+</div>
+<div class="reminder-row">
+<div>
+<div class="reminder-label">Щоденна ціль</div>
+<div class="reminder-sub">Скільки хвилин в день</div>
+</div>
+<select class="time-select" id="dailyGoal">
+<option>15 хв</option>
+<option selected>30 хв</option>
+<option>45 хв</option>
+<option>1 година</option>
+</select>
+</div>
+</div>
+
+<!-- SETTINGS -->
+<div class="settings-card">
+<h3>⚙️ Налаштування</h3>
+<div class="settings-row">
+<div>
+<div class="settings-label">Голос ШІ</div>
+<div class="settings-sub">Для діалогів і вимови</div>
+</div>
+<select class="settings-select">
+<option>👩 Жіночий</option>
+<option>👨 Чоловічий</option>
+</select>
+</div>
+<div class="settings-row">
+<div>
+<div class="settings-label">Звукові ефекти</div>
+<div class="settings-sub">Звуки при правильній відповіді</div>
+</div>
+<div class="toggle on" id="soundToggle" onclick="toggleSound()"></div>
+</div>
+<div class="settings-row">
+<div>
+<div class="settings-label">Показувати транскрипцію</div>
+<div class="settings-sub">Латинські літери під грузинськими</div>
+</div>
+<div class="toggle on" id="transcToggle" onclick="toggleTransc()"></div>
+</div>
+<div class="settings-row">
+<div>
+<div class="settings-label">Складність тестів</div>
+</div>
+<select class="settings-select">
+<option>Легка</option>
+<option selected>Середня</option>
+<option>Важка</option>
+</select>
+</div>
+</div>
+
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px;">
+<button class="btn" onclick="saveSettings()">💾 Зберегти налаштування</button>
+<button class="btn btn-danger" onclick="resetProgress()">🗑️ Скинути прогрес</button>
+</div>
+
+</div>
+
+<script>
+const avatars = ['👤','👩','👨','👩‍🦰','👨‍🦱','👩‍🦳','🧑','👩‍🎓','👨‍🎓'];
+let avatarIdx = 0;
+
+function changeAvatar() {
+avatarIdx = (avatarIdx + 1) % avatars.length;
+document.getElementById('avatarEl').textContent = avatars[avatarIdx];
+localStorage.setItem('kartuli_avatar', avatarIdx);
+}
+
+function editProfile() {
+const name = prompt('Введи своє ім\'я:', document.getElementById('profileName').textContent);
+if (name && name.trim()) {
+document.getElementById('profileName').textContent = name.trim();
+document.getElementById('certName').textContent = name.trim();
+localStorage.setItem('kartuli_name', name.trim());
+}
+}
+
+function toggleReminder(type) {
+const el = document.getElementById(type + 'Toggle');
+el.classList.toggle('on');
+}
+
+function toggleSound() {
+document.getElementById('soundToggle').classList.toggle('on');
+}
+
+function toggleTransc() {
+document.getElementById('transcToggle').classList.toggle('on');
+}
+
+function saveSettings() {
+const name = document.getElementById('profileName').textContent;
+const morning = document.getElementById('morningTime').value;
+const evening = document.getElementById('eveningTime').value;
+const goal = document.getElementById('dailyGoal').value;
+
+localStorage.setItem('kartuli_name', name);
+localStorage.setItem('kartuli_morning', morning);
+localStorage.setItem('kartuli_evening', evening);
+localStorage.setItem('kartuli_goal', goal);
+
+alert('✅ Налаштування збережено!');
+}
+
+function resetProgress() {
+if (confirm('Ти впевнена? Весь прогрес буде видалено!')) {
+localStorage.clear();
+alert('Прогрес скинуто. Починаємо з нуля!');
+location.reload();
+}
+}
+
+function shareCert() {
+const name = document.getElementById('profileName').textContent;
+const text = `🎉 Я отримала сертифікат рівня A1 з грузинської мови на Kartuli! 🇬🇪\n\nВивчай грузинську безкоштовно: k60081207-lang.github.io/kartuli`;
+if (navigator.share) {
+navigator.share({ title: 'Сертифікат Kartuli', text });
+} else {
+navigator.clipboard.writeText(text);
+alert('Текст скопійовано! Вставляй в соцмережі 🎉');
+}
+}
+
+// LOAD SAVED DATA
+window.onload = () => {
+const name = localStorage.getItem('kartuli_name');
+if (name) {
+document.getElementById('profileName').textContent = name;
+document.getElementById('certName').textContent = name;
+}
+const avatar = localStorage.getItem('kartuli_avatar');
+if (avatar) {
+avatarIdx = parseInt(avatar);
+document.getElementById('avatarEl').textContent = avatars[avatarIdx];
+}
+};
+</script>
+</body>
+</html>
