@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kartuli — Ігри</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+<style>
+:root {
+--bg: #F5F5F5;
+--surface: #FFFFFF;
+--text: #111111;
+--text-muted: #666666;
+--accent: #2C3E8C;
+--accent-light: #E8ECFA;
+--border: #E0E0E0;
+--success: #2E7D32;
+--success-light: #E8F5E9;
+--error: #C62828;
+--error-light: #FFEBEE;
+--warning: #F57F17;
+--warning-light: #FFFDE7;
+--radius: 12px;
+--transition: 0.3s ease;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+nav {
+background: var(--surface);
+border-bottom: 1px solid var(--border);
+padding: 0 24px;
+height: 64px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+position: sticky;
+top: 0;
+z-index: 100;
+}
+
+.logo { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--accent); }
+.logo span { background: var(--accent); color: #fff; border-radius: 6px; padding: 2px 8px; margin-right: 6px; }
+
+.nav-back {
+color: var(--text-muted); font-size: 14px; cursor: pointer;
+padding: 8px 12px; border-radius: 8px; transition: background var(--transition);
+text-decoration: none;
+}
+.nav-back:hover { background: var(--accent-light); color: var(--accent); }
+
+.container { max-width: 800px; margin: 0 auto; padding: 40px 24px; }
+
+.section-header { margin-bottom: 32px; }
+.page-title { font-family: 'Playfair Display', serif; font-size: 32px; margin-bottom: 8px; }
+.page-sub { color: var(--text-muted); font-size: 15px; }
+
+/* GAME SELECT */
+.games-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+gap: 16px;
+margin-bottom: 40px;
+}
+
+.game-card {
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: var(--radius);
+padding: 28px 20px;
+cursor: pointer;
+transition: all var(--transition);
+text-align: center;
+}
+
+.game-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 16px rgba(44,62,140,0.1); }
+.game-card.active-game { border-color: var(--accent); background: var(--accent-light); }
+
+.game-icon { font-size: 40px; margin-bottom: 14px; }
+.game-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+.game-card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+/* GAME AREA */
+.game-area { display: none; }
+.game-area.active { display: block; }
+
+.game-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 24px;
+}
+
+.game-title { font-size: 20px; font-weight: 600; }
+
+.game-stats {
+display: flex;
+gap: 16px;
+font-size: 14px;
+color: var(--text-muted);
+}
+
+.stat { display: flex; align-items: center; gap: 6px; font-weight: 500; }
+
+.btn {
+background: var(--accent);
+color: #fff;
+border: none;
+border-radius: 8px;
+padding: 12px 24px;
+font-size: 14px;
+font-weight: 500;
+cursor: pointer;
+transition: opacity var(--transition);
+}
+.btn:hover { opacity: 0.88; }
+.btn-outline {
+background: transparent;
+color: var(--accent);
+border: 1.5px solid var(--accent);
+}
+.btn-outline:hover { background: var(--accent-light); opacity: 1; }
+.btn-sm { padding: 8px 16px; font-size: 13px; }
+
+/* ── MATCH GAME ── */
+.match-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 12px;
+margin-bottom: 24px;
+}
+
+.match-col { display: flex; flex-direction: column; gap: 10px; }
+
+.match-item {
+padding: 14px 18px;
+border: 1.5px solid var(--border);
+border-radius: 8px;
+background: var(--surface);
+font-size: 15px;
+font-weight: 500;
+cursor: pointer;
+transition: all var(--transition);
+text-align: center;
+}
+
+.match-item:hover { border-color: var(--accent); background: var(--accent-light); }
+.match-item.selected { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
+.match-item.matched { border-color: var(--success); background: var(--success-light); color: var(--success); pointer-events: none; }
+.match-item.wrong-flash { border-color: var(--error); background: var(--error-light); }
+
+/* ── MEMORY GAME ── */
+.memory-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 10px;
+margin-bottom: 24px;
+}
+
+.memory-card {
+aspect-ratio: 1;
+border: 1.5px solid var(--border);
+border-radius: var(--radius);
+background: var(--surface);
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 13px;
+font-weight: 600;
+transition: all var(--transition);
+position: relative;
+overflow: hidden;
+}
+
+.memory-card.flipped { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+.memory-card.matched { background: var(--success-light); border-color: var(--success); color: var(--success); pointer-events: none; }
+.memory-card.back { background: var(--accent); color: transparent; }
+.memory-card.back::after { content: 'კ'; color: rgba(255,255,255,0.3); font-size: 24px; font-family: 'Playfair Display', serif; }
+
+/* ── SPELLING GAME ── */
+.spelling-word {
+font-size: 48px;
+font-weight: 700;
+color: var(--accent);
+text-align: center;
+margin-bottom: 8px;
+}
+
+.spelling-hint {
+text-align: center;
+color: var(--text-muted);
+font-size: 14px;
+margin-bottom: 24px;
+}
+
+.spelling-input {
+width: 100%;
+padding: 16px 20px;
+border: 1.5px solid var(--border);
+border-radius: 10px;
+font-size: 18px;
+font-family: 'Inter', sans-serif;
+outline: none;
+text-align: center;
+transition: border-color var(--transition);
+margin-bottom: 16px;
+}
+
+.spelling-input:focus { border-color: var(--accent); }
+.spelling-input.correct { border-color: var(--success); background: var(--success-light); }
+.spelling-input.wrong { border-color: var(--error); background: var(--error-light); }
+
+/* ── SCRAMBLE GAME ── */
+.scramble-word {
+font-size: 36px;
+font-weight: 700;
+color: var(--text-muted);
+text-align: center;
+letter-spacing: 8px;
+margin-bottom: 8px;
+}
+
+.scramble-hint { text-align: center; color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+
+.letter-buttons {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+justify-content: center;
+margin-bottom: 20px;
+}
+
+.letter-btn {
+width: 48px;
+height: 48px;
+border: 1.5px solid var(--accent);
+border-radius: 8px;
+background: var(--accent-light);
+color: var(--accent);
+font-size: 20px;
+font-weight: 700;
+cursor: pointer;
+transition: all var(--transition);
+}
+
+.letter-btn:hover { background: var(--accent); color: #fff; }
+.letter-btn:disabled { opacity: 0.3; pointer-events: none; }
+
+.answer-display {
+min-height: 56px;
+border: 1.5px dashed var(--border);
+border-radius: 10px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 24px;
+font-weight: 700;
+color: var(--accent);
+letter-spacing: 4px;
+margin-bottom: 16px;
+padding: 8px;
+}
+
+/* ── FLASHCARD RACE ── */
+.flashcard {
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: 16px;
+padding: 48px 32px;
+text-align: center;
+margin-bottom: 20px;
+min-height: 200px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+}
+
+.flashcard-emoji { font-size: 56px; margin-bottom: 16px; }
+.flashcard-geo { font-size: 36px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+.flashcard-latin { font-size: 14px; color: var(--text-muted); font-style: italic; }
+
+.flashcard-options {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 10px;
+margin-bottom: 20px;
+}
+
+.flashcard-opt {
+padding: 14px;
+border: 1.5px solid var(--border);
+border-radius: 8px;
+background: var(--surface);
+font-size: 14px;
+font-weight: 500;
+cursor: pointer;
+transition: all var(--transition);
+}
+
+.flashcard-opt:hover { border-color: var(--accent); background: var(--accent-light); }
+.flashcard-opt.correct { border-color: var(--success); background: var(--success-light); color: var(--success); }
+.flashcard-opt.wrong { border-color: var(--error); background: var(--error-light); color: var(--error); }
+
+.timer-bar {
+height: 6px;
+background: var(--border);
+border-radius: 3px;
+margin-bottom: 20px;
+overflow: hidden;
+}
+
+.timer-fill {
+height: 100%;
+background: var(--accent);
+transition: width 0.1s linear;
+}
+
+/* RESULT */
+.result-box {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+padding: 40px;
+text-align: center;
+}
+
+.result-emoji { font-size: 56px; margin-bottom: 16px; }
+.result-score { font-size: 48px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+.result-label { color: var(--text-muted); font-size: 15px; margin-bottom: 24px; }
+
+@media (max-width: 600px) {
+.match-grid { grid-template-columns: 1fr; }
+.memory-grid { grid-template-columns: repeat(4, 1fr); }
+.flashcard-options { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="logo"><span>კ</span> Kartuli</div>
+<a class="nav-back" href="index.html">← Назад</a>
+</nav>
+
+<div class="container">
+
+<div class="section-header">
+<h1 class="page-title">🎮 Ігри</h1>
+<p class="page-sub">Вивчай грузинські слова граючи — обери гру!</p>
+</div>
+
+<!-- GAME SELECT -->
+<div class="games-grid" id="gameSelect">
+<div class="game-card" onclick="startGame('match')">
+<div class="game-icon">🔗</div>
+<h3>Match</h3>
+<p>З'єднай грузинське слово з перекладом</p>
+</div>
+<div class="game-card" onclick="startGame('memory')">
+<div class="game-icon">🧠</div>
+<h3>Memory</h3>
+<p>Знайди пари слово-переклад серед карток</p>
+</div>
+<div class="game-card" onclick="startGame('spelling')">
+<div class="game-icon">✍️</div>
+<h3>Spelling</h3>
+<p>Послухай слово і напиши його правильно</p>
+</div>
+<div class="game-card" onclick="startGame('scramble')">
+<div class="game-icon">🔀</div>
+<h3>Word Scramble</h3>
+<p>Склади слово з перемішаних букв</p>
+</div>
+<div class="game-card" onclick="startGame('flashcard')">
+<div class="game-icon">⚡</div>
+<h3>Flashcard Race</h3>
+<p>Швидкісна гра — відповідай поки не спливе час!</p>
+</div>
+</div>
+
+<!-- ── MATCH GAME ── -->
+<div class="game-area" id="game-match">
+<div class="game-header">
+<div class="game-title">🔗 Match</div>
+<div class="game-stats">
+<span class="stat">✅ <span id="match-score">0</span></span>
+<span class="stat">❌ <span id="match-errors">0</span></span>
+</div>
+</div>
+<div class="match-grid">
+<div class="match-col" id="match-geo"></div>
+<div class="match-col" id="match-ukr"></div>
+</div>
+<button class="btn btn-outline" onclick="backToMenu()">← Інші ігри</button>
+</div>
+
+<!-- ── MEMORY GAME ── -->
+<div class="game-area" id="game-memory">
+<div class="game-header">
+<div class="game-title">🧠 Memory</div>
+<div class="game-stats">
+<span class="stat">🎯 <span id="memory-pairs">0</span>/8</span>
+<span class="stat">🔄 <span id="memory-moves">0</span></span>
+</div>
+</div>
+<div class="memory-grid" id="memory-grid"></div>
+<button class="btn btn-outline" onclick="backToMenu()">← Інші ігри</button>
+</div>
+
+<!-- ── SPELLING GAME ── -->
+<div class="game-area" id="game-spelling">
+<div class="game-header">
+<div class="game-title">✍️ Spelling</div>
+<div class="game-stats">
+<span class="stat">📝 <span id="spell-num">1</span>/8</span>
+<span class="stat">✅ <span id="spell-score">0</span></span>
+</div>
+</div>
+<div class="spelling-word" id="spell-emoji"></div>
+<div class="spelling-hint" id="spell-hint"></div>
+<button class="btn" style="display:block;margin:0 auto 16px;" onclick="speakSpell()">🔊 Послухати слово</button>
+<input class="spelling-input" id="spell-input" placeholder="Напиши слово латинськими літерами..." onkeydown="if(event.key==='Enter')checkSpelling()" />
+<div style="display:flex;gap:10px;">
+<button class="btn" onclick="checkSpelling()">Перевірити</button>
+<button class="btn btn-outline" onclick="backToMenu()">← Інші ігри</button>
+</div>
+</div>
+
+<!-- ── SCRAMBLE GAME ── -->
+<div class="game-area" id="game-scramble">
+<div class="game-header">
+<div class="game-title">🔀 Word Scramble</div>
+<div class="game-stats">
+<span class="stat">📝 <span id="scr-num">1</span>/8</span>
+<span class="stat">✅ <span id="scr-score">0</span></span>
+</div>
+</div>
+<div class="scramble-hint" id="scr-hint"></div>
+<div class="answer-display" id="scr-answer"></div>
+<div class="letter-buttons" id="scr-letters"></div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;">
+<button class="btn" onclick="checkScramble()">Перевірити</button>
+<button class="btn btn-outline btn-sm" onclick="clearScramble()">Очистити</button>
+<button class="btn btn-outline" onclick="backToMenu()">← Інші ігри</button>
+</div>
+</div>
+
+<!-- ── FLASHCARD RACE ── -->
+<div class="game-area" id="game-flashcard">
+<div class="game-header">
+<div class="game-title">⚡ Flashcard Race</div>
+<div class="game-stats">
+<span class="stat">📝 <span id="flash-num">1</span>/10</span>
+<span class="stat">✅ <span id="flash-score">0</span></span>
+</div>
+</div>
+<div class="timer-bar"><div class="timer-fill" id="flash-timer" style="width:100%"></div></div>
+<div class="flashcard" id="flash-card">
+<div class="flashcard-emoji" id="flash-emoji"></div>
+<div class="flashcard-geo" id="flash-geo"></div>
+<div class="flashcard-latin" id="flash-latin"></div>
+</div>
+<div class="flashcard-options" id="flash-options"></div>
+<button class="btn btn-outline" onclick="backToMenu()">← Інші ігри</button>
+</div>
+
+</div>
+
+<script>
+const words = [
+{emoji:'👋',geo:'გამარჯობა',latin:'gamarjoba',ukr:'Привіт'},
+{emoji:'🙏',geo:'მადლობა',latin:'madloba',ukr:'Дякую'},
+{emoji:'✅',geo:'კი',latin:'ki',ukr:'Так'},
+{emoji:'❌',geo:'არა',latin:'ara',ukr:'Ні'},
+{emoji:'🍊',geo:'პორტოხალი',latin:'portoxali',ukr:'Апельсин'},
+{emoji:'🍎',geo:'ვაშლი',latin:'vashli',ukr:'Яблуко'},
+{emoji:'💧',geo:'წყალი',latin:'tsqali',ukr:'Вода'},
+{emoji:'🏠',geo:'სახლი',latin:'sakhli',ukr:'Будинок'},
+{emoji:'☀️',geo:'მზე',latin:'mze',ukr:'Сонце'},
+{emoji:'🌙',geo:'მთვარე',latin:'mtvare',ukr:'Місяць'},
+{emoji:'👨',geo:'კაცი',latin:'katsi',ukr:'Чоловік'},
+{emoji:'👩',geo:'ქალი',latin:'qali',ukr:'Жінка'},
+];
+
+function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+
+function backToMenu() {
+document.querySelectorAll('.game-area').forEach(g => g.classList.remove('active'));
+document.getElementById('gameSelect').style.display = 'grid';
+clearInterval(flashTimer);
+}
+
+function startGame(name) {
+document.getElementById('gameSelect').style.display = 'none';
+document.querySelectorAll('.game-area').forEach(g => g.classList.remove('active'));
+document.getElementById('game-'+name).classList.add('active');
+if (name === 'match') initMatch();
+if (name === 'memory') initMemory();
+if (name === 'spelling') initSpelling();
+if (name === 'scramble') initScramble();
+if (name === 'flashcard') initFlashcard();
+}
+
+// ── MATCH ──
+let matchSelected = null;
+let matchScore = 0, matchErrors = 0;
+
+function initMatch() {
+matchSelected = null; matchScore = 0; matchErrors = 0;
+document.getElementById('match-score').textContent = 0;
+document.getElementById('match-errors').textContent = 0;
+
+const pool = shuffle(words).slice(0, 6);
+const geoItems = shuffle(pool);
+const ukrItems = shuffle(pool);
+
+document.getElementById('match-geo').innerHTML = geoItems.map(w =>
+`<div class="match-item" data-word="${w.latin}" data-type="geo" onclick="selectMatch(this)">${w.geo}</div>`
+).join('');
+
+document.getElementById('match-ukr').innerHTML = ukrItems.map(w =>
+`<div class="match-item" data-word="${w.latin}" data-type="ukr" onclick="selectMatch(this)">${w.ukr}</div>`
+).join('');
+}
+
+function selectMatch(el) {
+if (el.classList.contains('matched')) return;
+if (matchSelected && matchSelected.dataset.type === el.dataset.type) {
+matchSelected.classList.remove('selected');
+matchSelected = el;
+el.classList.add('selected');
+return;
+}
+if (!matchSelected) {
+matchSelected = el;
+el.classList.add('selected');
+return;
+}
+if (matchSelected.dataset.word === el.dataset.word) {
+matchSelected.classList.remove('selected');
+matchSelected.classList.add('matched');
+el.classList.add('matched');
+matchScore++;
+document.getElementById('match-score').textContent = matchScore;
+matchSelected = null;
+if (matchScore === 6) setTimeout(() => { alert('🎉 Чудово! Всі пари знайдено!'); initMatch(); }, 300);
+} else {
+matchSelected.classList.add('wrong-flash');
+el.classList.add('wrong-flash');
+matchErrors++;
+document.getElementById('match-errors').textContent = matchErrors;
+setTimeout(() => {
+matchSelected.classList.remove('selected','wrong-flash');
+el.classList.remove('wrong-flash');
+matchSelected = null;
+}, 700);
+}
+}
+
+// ── MEMORY ──
+let memoryFlipped = [], memoryMatched = 0, memoryMoves = 0, memoryLock = false;
+
+function initMemory() {
+memoryFlipped = []; memoryMatched = 0; memoryMoves = 0; memoryLock = false;
+document.getElementById('memory-pairs').textContent = 0;
+document.getElementById('memory-moves').textContent = 0;
+
+const pool = shuffle(words).slice(0, 8);
+const cards = shuffle([
+...pool.map(w => ({id: w.latin, text: w.geo, type: 'geo'})),
+...pool.map(w => ({id: w.latin, text: w.ukr, type: 'ukr'})),
+]);
+
+document.getElementById('memory-grid').innerHTML = cards.map((c, i) =>
+`<div class="memory-card back" data-id="${c.id}" data-idx="${i}" onclick="flipMemory(this)">${c.text}</div>`
+).join('');
+}
+
+function flipMemory(el) {
+if (memoryLock || el.classList.contains('flipped') || el.classList.contains('matched')) return;
+el.classList.remove('back');
+el.classList.add('flipped');
+memoryFlipped.push(el);
+
+if (memoryFlipped.length === 2) {
+memoryMoves++;
+document.getElementById('memory-moves').textContent = memoryMoves;
+memoryLock = true;
+const [a, b] = memoryFlipped;
+if (a.dataset.id === b.dataset.id && a !== b) {
+a.classList.add('matched'); b.classList.add('matched');
+memoryMatched++;
+document.getElementById('memory-pairs').textContent = memoryMatched;
+memoryFlipped = []; memoryLock = false;
+if (memoryMatched === 8) setTimeout(() => { alert(`🎉 Вітаємо! ${memoryMoves} ходів!`); initMemory(); }, 300);
+} else {
+setTimeout(() => {
+a.classList.remove('flipped'); a.classList.add('back');
+b.classList.remove('flipped'); b.classList.add('back');
+memoryFlipped = []; memoryLock = false;
+}, 900);
+}
+}
+}
+
+// ── SPELLING ──
+let spellIdx = 0, spellScore = 0, spellPool = [];
+
+function initSpelling() {
+spellIdx = 0; spellScore = 0;
+spellPool = shuffle(words).slice(0, 8);
+document.getElementById('spell-score').textContent = 0;
+showSpell();
+}
+
+function showSpell() {
+if (spellIdx >= spellPool.length) {
+document.getElementById('game-spelling').innerHTML = resultHTML(spellScore, spellPool.length, 'spelling');
+return;
+}
+const w = spellPool[spellIdx];
+document.getElementById('spell-num').textContent = spellIdx + 1;
+document.getElementById('spell-emoji').textContent = w.emoji;
+document.getElementById('spell-hint').textContent = `Переклад: ${w.ukr}`;
+const inp = document.getElementById('spell-input');
+inp.value = '';
+inp.className = 'spelling-input';
+inp.focus();
+}
+
+function speakSpell() {
+const w = spellPool[spellIdx];
+if ('speechSynthesis' in window) {
+const u = new SpeechSynthesisUtterance(w.ukr);
+u.lang = 'uk-UA';
+speechSynthesis.speak(u);
+}
+}
+
+function checkSpelling() {
+const w = spellPool[spellIdx];
+const val = document.getElementById('spell-input').value.trim().toLowerCase();
+const inp = document.getElementById('spell-input');
+if (val === w.latin.toLowerCase()) {
+inp.className = 'spelling-input correct';
+spellScore++;
+document.getElementById('spell-score').textContent = spellScore;
+setTimeout(() => { spellIdx++; showSpell(); }, 800);
+} else {
+inp.className = 'spelling-input wrong';
+setTimeout(() => {
+inp.value = w.latin;
+inp.className = 'spelling-input';
+setTimeout(() => { spellIdx++; showSpell(); }, 1200);
+}, 600);
+}
+}
+
+// ── SCRAMBLE ──
+let scrIdx = 0, scrScore = 0, scrPool = [], scrAnswer = [], scrLetters = [];
+
+function initScramble() {
+scrIdx = 0; scrScore = 0;
+scrPool = shuffle(words).slice(0, 8);
+document.getElementById('scr-score').textContent = 0;
+showScramble();
+}
+
+function showScramble() {
+if (scrIdx >= scrPool.length) {
+document.getElementById('game-scramble').innerHTML = resultHTML(scrScore, scrPool.length, 'scramble');
+return;
+}
+const w = scrPool[scrIdx];
+scrAnswer = [];
+scrLetters = shuffle(w.latin.split(''));
+document.getElementById('scr-num').textContent = scrIdx + 1;
+document.getElementById('scr-hint').textContent = `${w.emoji} ${w.ukr}`;
+document.getElementById('scr-answer').textContent = '';
+document.getElementById('scr-letters').innerHTML = scrLetters.map((l, i) =>
+`<button class="letter-btn" data-idx="${i}" onclick="addLetter(this,'${l}')">${l}</button>`
+).join('');
+}
+
+function addLetter(btn, letter) {
+scrAnswer.push({letter, idx: btn.dataset.idx});
+btn.disabled = true;
+document.getElementById('scr-answer').textContent = scrAnswer.map(x => x.letter).join('');
+}
+
+function clearScramble() {
+scrAnswer = [];
+document.getElementById('scr-answer').textContent = '';
+document.querySelectorAll('.letter-btn').forEach(b => b.disabled = false);
+}
+
+function checkScramble() {
+const w = scrPool[scrIdx];
+const ans = scrAnswer.map(x => x.letter).join('').toLowerCase();
+if (ans === w.latin.toLowerCase()) {
+scrScore++;
+document.getElementById('scr-score').textContent = scrScore;
+document.getElementById('scr-answer').style.color = 'var(--success)';
+setTimeout(() => { document.getElementById('scr-answer').style.color = ''; scrIdx++; showScramble(); }, 800);
+} else {
+document.getElementById('scr-answer').style.color = 'var(--error)';
+setTimeout(() => {
+document.getElementById('scr-answer').style.color = '';
+clearScramble();
+}, 800);
+}
+}
+
+// ── FLASHCARD RACE ──
+let flashIdx = 0, flashScore = 0, flashPool = [], flashTimer, flashTime, flashAnswered;
+
+function initFlashcard() {
+flashIdx = 0; flashScore = 0;
+flashPool = shuffle(words).slice(0, 10);
+document.getElementById('flash-score').textContent = 0;
+showFlash();
+}
+
+function showFlash() {
+if (flashIdx >= flashPool.length) {
+clearInterval(flashTimer);
+document.getElementById('game-flashcard').innerHTML = resultHTML(flashScore, flashPool.length, 'flashcard');
+return;
+}
+flashAnswered = false;
+clearInterval(flashTimer);
+flashTime = 100;
+document.getElementById('flash-timer').style.width = '100%';
+document.getElementById('flash-num').textContent = flashIdx + 1;
+
+const w = flashPool[flashIdx];
+document.getElementById('flash-emoji').textContent = w.emoji;
+document.getElementById('flash-geo').textContent = w.geo;
+document.getElementById('flash-latin').textContent = w.latin;
+
+const opts = shuffle([w.ukr, ...shuffle(words.filter(x => x !== w)).slice(0,3).map(x => x.ukr)]);
+document.getElementById('flash-options').innerHTML = opts.map(o =>
+`<button class="flashcard-opt" onclick="checkFlash('${o}','${w.ukr}',this)">${o}</button>`
+).join('');
+
+flashTimer = setInterval(() => {
+flashTime -= 2;
+document.getElementById('flash-timer').style.width = flashTime + '%';
+if (flashTime <= 0) {
+clearInterval(flashTimer);
+if (!flashAnswered) { flashIdx++; showFlash(); }
+}
+}, 100);
+}
+
+function checkFlash(selected, correct, btn) {
+if (flashAnswered) return;
+flashAnswered = true;
+clearInterval(flashTimer);
+
+document.querySelectorAll('.flashcard-opt').forEach(b => {
+if (b.textContent === correct) b.classList.add('correct');
+});
+
+if (selected === correct) {
+btn.classList.add('correct');
+flashScore++;
+document.getElementById('flash-score').textContent = flashScore;
+} else {
+btn.classList.add('wrong');
+}
+
+setTimeout(() => { flashIdx++; showFlash(); }, 900);
+}
+
+// RESULT HTML
+function resultHTML(score, total, game) {
+const pct = Math.round((score/total)*100);
+return `
+<div class="result-box">
+<div class="result-emoji">${pct >= 70 ? '🎉' : '💪'}</div>
+<div class="result-score">${score}/${total}</div>
+<div class="result-label">${pct}% правильних відповідей</div>
+<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+<button class="btn" onclick="startGame('${game}')">Грати ще раз</button>
+<button class="btn btn-outline" onclick="backToMenu()">Інші ігри</button>
+</div>
+</div>
+`;
+}
+</script>
+</body>
+</html>
