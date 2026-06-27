@@ -577,15 +577,29 @@ window.location.href = level.toLowerCase() + '.html';
   window.location.href = 'profile.html';
 }
 
+function registerUser() {
+  const inputs = document.querySelectorAll('#modal-content input');
+  const name = inputs[0].value;
+  const email = inputs[1].value;
+  const password = inputs[2].value;
+  if (!name  !email  !password) { alert('Заповни всі поля!'); return; }
+  if (password.length < 8) { alert('Пароль мінімум 8 символів!'); return; }
+  localStorage.setItem('kartuli_user', JSON.stringify({name, email, password}));
+  localStorage.setItem('kartuli_name', name);
+  closeModal();
+  alert('✅ Вітаємо ' + name + '!');
+  window.location.href = 'profile.html';
+}
+
 function loginUser() {
-  const email = document.querySelector('#modal-content input[type="email"]').value;
-  const password = document.querySelector('#modal-content input[type="password"]').value;
+  const inputs = document.querySelectorAll('#modal-content input');
+  const email = inputs[0].value;
+  const password = inputs[1].value;
   const user = JSON.parse(localStorage.getItem('kartuli_user') || 'null');
-  if (!user) { alert('Акаунт не знайдено. Спочатку зареєструйся!'); return; }
-  if (user.email !== email) { alert('Невірна пошта!'); return; }
+  if (!user) { alert('Спочатку зареєструйся!'); return; }
+  if (user.email !== email || user.password !== password) { alert('Невірна пошта або пароль!'); return; }
   localStorage.setItem('kartuli_name', user.name);
   closeModal();
-  alert('✅ Вітаємо назад, ' + user.name + '!');
   window.location.href = 'profile.html';
 }
 </script>
