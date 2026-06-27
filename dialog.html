@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kartuli — Голосовий діалог</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+<style>
+:root {
+--bg: #F5F5F5;
+--surface: #FFFFFF;
+--text: #111111;
+--text-muted: #666666;
+--accent: #2C3E8C;
+--accent-light: #E8ECFA;
+--border: #E0E0E0;
+--success: #2E7D32;
+--success-light: #E8F5E9;
+--radius: 12px;
+--transition: 0.3s ease;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+nav {
+background: var(--surface);
+border-bottom: 1px solid var(--border);
+padding: 0 24px;
+height: 64px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+position: sticky;
+top: 0;
+z-index: 100;
+}
+
+.logo { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--accent); }
+.logo span { background: var(--accent); color: #fff; border-radius: 6px; padding: 2px 8px; margin-right: 6px; }
+.nav-back { color: var(--text-muted); font-size: 14px; text-decoration: none; padding: 8px 12px; border-radius: 8px; transition: background var(--transition); }
+.nav-back:hover { background: var(--accent-light); color: var(--accent); }
+
+.container { max-width: 800px; margin: 0 auto; padding: 40px 24px; }
+
+.section-header { margin-bottom: 32px; }
+.page-title { font-family: 'Playfair Display', serif; font-size: 32px; margin-bottom: 8px; }
+.page-sub { color: var(--text-muted); font-size: 15px; }
+
+/* VOICE SELECTOR */
+.voice-selector {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+padding: 24px;
+margin-bottom: 24px;
+display: flex;
+align-items: center;
+gap: 16px;
+flex-wrap: wrap;
+}
+
+.voice-selector label { font-size: 14px; font-weight: 500; }
+
+.voice-btn {
+padding: 10px 20px;
+border: 1.5px solid var(--border);
+border-radius: 8px;
+background: var(--surface);
+font-size: 14px;
+font-weight: 500;
+cursor: pointer;
+transition: all var(--transition);
+}
+
+.voice-btn.active { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
+
+/* TOPIC SELECTOR */
+.topics-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+gap: 12px;
+margin-bottom: 24px;
+}
+
+.topic-card {
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: var(--radius);
+padding: 20px 16px;
+cursor: pointer;
+transition: all var(--transition);
+text-align: center;
+}
+
+.topic-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.topic-card.selected { border-color: var(--accent); background: var(--accent-light); }
+.topic-icon { font-size: 28px; margin-bottom: 8px; }
+.topic-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.topic-card p { font-size: 12px; color: var(--text-muted); }
+
+/* CHAT */
+.chat-container {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+overflow: hidden;
+margin-bottom: 20px;
+}
+
+.chat-header {
+padding: 16px 20px;
+border-bottom: 1px solid var(--border);
+display: flex;
+align-items: center;
+gap: 12px;
+}
+
+.ai-avatar {
+width: 40px;
+height: 40px;
+background: var(--accent);
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 18px;
+flex-shrink: 0;
+}
+
+.ai-info h4 { font-size: 15px; font-weight: 600; }
+.ai-info p { font-size: 12px; color: var(--text-muted); }
+
+.status-dot {
+width: 8px;
+height: 8px;
+background: #4CAF50;
+border-radius: 50%;
+margin-left: auto;
+}
+
+.chat-messages {
+padding: 20px;
+min-height: 300px;
+max-height: 400px;
+overflow-y: auto;
+display: flex;
+flex-direction: column;
+gap: 16px;
+}
+
+.message {
+display: flex;
+gap: 10px;
+max-width: 85%;
+animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.message.user { align-self: flex-end; flex-direction: row-reverse; }
+
+.msg-avatar {
+width: 32px;
+height: 32px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 14px;
+flex-shrink: 0;
+}
+
+.message.ai .msg-avatar { background: var(--accent-light); }
+.message.user .msg-avatar { background: var(--accent); color: #fff; }
+
+.msg-bubble {
+padding: 12px 16px;
+border-radius: 12px;
+font-size: 14px;
+line-height: 1.6;
+}
+
+.message.ai .msg-bubble { background: var(--bg); border: 1px solid var(--border); }
+.message.user .msg-bubble { background: var(--accent); color: #fff; }
+
+.msg-geo { font-size: 16px; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
+.message.user .msg-geo { color: rgba(255,255,255,0.9); }
+.msg-latin { font-size: 11px; color: var(--text-muted); font-style: italic; margin-bottom: 4px; }
+.message.user .msg-latin { color: rgba(255,255,255,0.7); }
+
+.msg-correction {
+margin-top: 8px;
+padding: 8px 12px;
+background: #FFF3E0;
+border-radius: 8px;
+font-size: 12px;
+color: #E65100;
+border-left: 3px solid #FF9800;
+}
+
+.typing-indicator {
+display: flex;
+gap: 4px;
+padding: 12px 16px;
+background: var(--bg);
+border: 1px solid var(--border);
+border-radius: 12px;
+width: fit-content;
+}
+
+.typing-dot {
+width: 6px;
+height: 6px;
+background: var(--text-muted);
+border-radius: 50%;
+animation: bounce 1.2s infinite;
+}
+
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce {
+0%, 60%, 100% { transform: translateY(0); }
+30% { transform: translateY(-6px); }
+}
+
+/* INPUT AREA */
+.chat-input-area {
+padding: 16px 20px;
+border-top: 1px solid var(--border);
+display: flex;
+gap: 10px;
+align-items: center;
+}
+
+.chat-input {
+flex: 1;
+padding: 12px 16px;
+border: 1.5px solid var(--border);
+border-radius: 10px;
+font-size: 14px;
+font-family: 'Inter', sans-serif;
+outline: none;
+transition: border-color var(--transition);
+}
+
+.chat-input:focus { border-color: var(--accent); }
+
+.btn {
+background: var(--accent);
+color: #fff;
+border: none;
+border-radius: 8px;
+padding: 12px 20px;
+font-size: 14px;
+font-weight: 500;
+cursor: pointer;
+transition: opacity var(--transition);
+white-space: nowrap;
+}
+
+.btn:hover { opacity: 0.88; }
+
+.btn-outline {
+background: transparent;
+color: var(--accent);
+border: 1.5px solid var(--accent);
+}
+
+.btn-outline:hover { background: var(--accent-light); opacity: 1; }
+
+.mic-btn {
+width: 44px;
+height: 44px;
+border-radius: 50%;
+border: 1.5px solid var(--border);
+background: var(--surface);
+font-size: 18px;
+cursor: pointer;
+transition: all var(--transition);
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.mic-btn.recording {
+background: #FFEBEE;
+border-color: #C62828;
+animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+0%, 100% { transform: scale(1); }
+50% { transform: scale(1.1); }
+}
+
+/* TIPS */
+.tips-box {
+background: var(--accent-light);
+border: 1px solid var(--accent);
+border-radius: var(--radius);
+padding: 20px;
+margin-bottom: 20px;
+}
+
+.tips-box h4 { font-size: 14px; font-weight: 600; color: var(--accent); margin-bottom: 12px; }
+.tip { font-size: 13px; color: var(--text); margin-bottom: 6px; }
+
+/* PHRASES */
+.phrases-grid {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+margin-bottom: 24px;
+}
+
+.phrase-btn {
+padding: 8px 14px;
+border: 1px solid var(--border);
+border-radius: 20px;
+background: var(--surface);
+font-size: 13px;
+cursor: pointer;
+transition: all var(--transition);
+}
+
+.phrase-btn:hover { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
+</style>
+</head>
+<body>
+
+<nav>
+<div class="logo"><span>კ</span> Kartuli</div>
+<a class="nav-back" href="index.html">← Назад</a>
+</nav>
+
+<div class="container">
+
+<div class="section-header">
+<h1 class="page-title">🎙️ Голосовий діалог</h1>
+<p class="page-sub">Розмовляй з ШІ грузинською — отримуй виправлення в реальному часі</p>
+</div>
+
+<!-- VOICE SELECTOR -->
+<div class="voice-selector">
+<label>Голос ШІ:</label>
+<button class="voice-btn active" onclick="setVoice('female', this)">👩 Жіночий</button>
+<button class="voice-btn" onclick="setVoice('male', this)">👨 Чоловічий</button>
+</div>
+
+<!-- TOPIC SELECTOR -->
+<div class="topics-grid">
+<div class="topic-card selected" onclick="selectTopic('greeting', this)">
+<div class="topic-icon">👋</div>
+<h4>Вітання</h4>
+<p>გამარჯობა!</p>
+</div>
+<div class="topic-card" onclick="selectTopic('cafe', this)">
+<div class="topic-icon">☕</div>
+<h4>У кафе</h4>
+<p>Замовити каву</p>
+</div>
+<div class="topic-card" onclick="selectTopic('shopping', this)">
+<div class="topic-icon">🛒</div>
+<h4>Магазин</h4>
+<p>Купити продукти</p>
+</div>
+<div class="topic-card" onclick="selectTopic('directions', this)">
+<div class="topic-icon">🗺️</div>
+<h4>Дорога</h4>
+<p>Запитати шлях</p>
+</div>
+<div class="topic-card" onclick="selectTopic('family', this)">
+<div class="topic-icon">👨‍👩‍👧</div>
+<h4>Сім'я</h4>
+<p>Розповісти про сім'ю</p>
+</div>
+<div class="topic-card" onclick="selectTopic('weather', this)">
+<div class="topic-icon">☀️</div>
+<h4>Погода</h4>
+<p>Поговорити про погоду</p>
+</div>
+</div>
+
+<!-- QUICK PHRASES -->
+<div class="phrases-grid" id="quickPhrases"></div>
+
+<!-- CHAT -->
+<div class="chat-container">
+<div class="chat-header">
+<div class="ai-avatar">🤖</div>
+<div class="ai-info">
+<h4>Ніно — грузинський ШІ</h4>
+<p>Вчитель грузинської мови</p>
+</div>
+<div class="status-dot"></div>
+</div>
+
+<div class="chat-messages" id="chatMessages"></div>
+
+<div class="chat-input-area">
+<button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Говорити">🎤</button>
+<input class="chat-input" id="chatInput" placeholder="Напиши або натисни 🎤 щоб говорити..." onkeydown="if(event.key==='Enter')sendMessage()" />
+<button class="btn" onclick="sendMessage()">Надіслати</button>
+</div>
+</div>
+
+<!-- TIPS -->
+<div class="tips-box">
+<h4>💡 Підказки для діалогу</h4>
+<div class="tip">🔤 Можеш писати латинськими літерами — ШІ зрозуміє</div>
+<div class="tip">🎤 Натисни мікрофон щоб говорити голосом</div>
+<div class="tip">✅ ШІ виправить твої помилки і поясне правильну вимову</div>
+<div class="tip">📝 Натискай на готові фрази вгорі щоб швидко відповідати</div>
+</div>
+
+</div>
+
+<script>
+const topics = {
+greeting: {
+phrases: ['გამარჯობა! (gamarjoba)', 'როგორ ხარ? (rogor khar)', 'კარგად ვარ (kargad var)', 'მადლობა (madloba)', 'ნახვამდის (nakhvamdis)'],
+opener: { geo: 'გამარჯობა! როგორ ხარ?', latin: 'Gamarjoba! Rogor khar?', ukr: 'Привіт! Як справи?' }
+},
+cafe: {
+phrases: ['ყავა მინდა (qava minda)', 'გთხოვთ (gtkhovt)', 'რამდენი ღირს? (ramdeni ghirs)', 'მადლობა (madloba)'],
+opener: { geo: 'გამარჯობა! რა გნებავთ?', latin: 'Gamarjoba! Ra gnebavet?', ukr: 'Привіт! Що бажаєте?' }
+},
+shopping: {
+phrases: ['რამდენი ღირს? (ramdeni ghirs)', 'ძვირია (dzvria)', 'იაფია (iafia)', 'გთხოვთ (gtkhovt)'],
+opener: { geo: 'გამარჯობა! რა გინდათ?', latin: 'Gamarjoba! Ra gindat?', ukr: 'Привіт! Що вам потрібно?' }
+},
+directions: {
+phrases: ['სად არის? (sad aris)', 'მარჯვნივ (marjvniv)', 'მარცხნივ (martskhniv)', 'პირდაპირ (pirdapir)'],
+opener: { geo: 'გამარჯობა! სად გინდათ წასვლა?', latin: 'Gamarjoba! Sad gindat tsasvla?', ukr: 'Привіт! Куди хочете піти?' }
+},
+family: {
+phrases: ['ოჯახი (ojakhi)', 'დედა (deda)', 'მამა (mama)', 'და (da)', 'ძმა (dzma)'],
+opener: { geo: 'გამარჯობა! მიყევი ოჯახზე!', latin: 'Gamarjoba! Miqevi ojakhe!', ukr: 'Привіт! Розкажи про свою сім\'ю!' }
+},
+weather: {
+phrases: ['ამინდი კარგია (amindi kargia)', 'ცხელა (tskhela)', 'ცივა (tsiva)', 'წვიმს (tsvims)'],
+opener: { geo: 'გამარჯობა! დღეს კარგი ამინდია?', latin: 'Gamarjoba! Dghes kargi amindial?', ukr: 'Привіт! Сьогодні гарна погода?' }
+}
+};
+
+const responses = {
+greeting: [
+{ geo: 'კარგად ვარ, გმადლობთ! შენ როგორ ხარ?', latin: 'Kargad var, gmadlobt! Shen rogor khar?', ukr: 'Добре, дякую! А ти як?' },
+{ geo: 'ძალიან კარგად! სიხარულით!', latin: 'Dzalian kargad! Sikharullit!', ukr: 'Дуже добре! З радістю!' },
+{ geo: 'გამარჯობა! სახელი რა გქვია?', latin: 'Gamarjoba! Sakheli ra gqvia?', ukr: 'Привіт! Як тебе звати?' },
+],
+cafe: [
+{ geo: 'გინდათ შავი ყავა თუ რძიანი?', latin: 'Gindat shavi qava tu rdziani?', ukr: 'Хочете чорну каву чи з молоком?' },
+{ geo: 'ერთი ყავა ხუთი ლარი ღირს.', latin: 'Erti qava khuti lari ghirs.', ukr: 'Одна кава коштує п\'ять ларі.' },
+],
+default: [
+{ geo: 'კარგია! გაგრძელე ასე!', latin: 'Kargia! Gagrdzele ase!', ukr: 'Чудово! Продовжуй так!' },
+{ geo: 'ძალიან კარგი! შენი გრამატიკა სწორია!', latin: 'Dzalian kargi! Sheni gramatika tsqoria!', ukr: 'Дуже добре! Твоя граматика правильна!' },
+{ geo: 'გაგრძელე სწავლა! კარგად მიდის!', latin: 'Gagrdzele tsavla! Kargad midis!', ukr: 'Продовжуй вчитися! Добре виходить!' },
+]
+};
+
+let currentTopic = 'greeting';
+let currentVoice = 'female';
+let isRecording = false;
+let recognition = null;
+
+function setVoice(voice, btn) {
+currentVoice = voice;
+document.querySelectorAll('.voice-btn').forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+}
+
+function selectTopic(topic, card) {
+currentTopic = topic;
+document.querySelectorAll('.topic-card').forEach(c => c.classList.remove('selected'));
+card.classList.add('selected');
+renderPhrases();
+clearChat();
+startDialog();
+}
+
+function renderPhrases() {
+const t = topics[currentTopic];
+document.getElementById('quickPhrases').innerHTML = t.phrases.map(p =>
+`<button class="phrase-btn" onclick="sendPhrase('${p}')">${p}</button>`
+).join('');
+}
+
+function sendPhrase(phrase) {
+document.getElementById('chatInput').value = phrase;
+sendMessage();
+}
+
+function clearChat() {
+document.getElementById('chatMessages').innerHTML = '';
+}
+
+function startDialog() {
+const opener = topics[currentTopic].opener;
+setTimeout(() => addMessage('ai', opener), 500);
+}
+
+function addMessage(type, content, correction = null) {
+const container = document.getElementById('chatMessages');
+const div = document.createElement('div');
+div.className = `message ${type}`;
+
+const avatar = type === 'ai' ? '🤖' : '👤';
+let html = `<div class="msg-avatar">${avatar}</div><div class="msg-bubble">`;
+
+if (content.geo) {
+html += `<div class="msg-geo">${content.geo}</div>`;
+html += `<div class="msg-latin">${content.latin}</div>`;
+html += `<div>${content.ukr}</div>`;
+} else {
+html += content;
+}
+
+if (correction) {
+html += `<div class="msg-correction">✏️ Виправлення: ${correction}</div>`;
+}
+
+html += '</div>';
+div.innerHTML = html;
+container.appendChild(div);
+container.scrollTop = container.scrollHeight;
+
+if (type === 'ai' && content.geo) {
+speak(content.ukr);
+}
+}
+
+function showTyping() {
+const container = document.getElementById('chatMessages');
+const div = document.createElement('div');
+div.className = 'message ai';
+div.id = 'typing';
+div.innerHTML = `
+<div class="msg-avatar">🤖</div>
+<div class="typing-indicator">
+<div class="typing-dot"></div>
+<div class="typing-dot"></div>
+<div class="typing-dot"></div>
+</div>
+`;
+container.appendChild(div);
+container.scrollTop = container.scrollHeight;
+}
+
+function hideTyping() {
+const t = document.getElementById('typing');
+if (t) t.remove();
+}
+
+function sendMessage() {
+const input = document.getElementById('chatInput');
+const text = input.value.trim();
+if (!text) return;
+
+addMessage('user', { geo: text, latin: '', ukr: '' });
+input.value = '';
+
+showTyping();
+
+setTimeout(() => {
+hideTyping();
+const topicResponses = responses[currentTopic] || responses.default;
+const r = topicResponses[Math.floor(Math.random() * topicResponses.length)];
+
+let correction = null;
+const lower = text.toLowerCase();
+if (lower.includes('gamarjoba') && !lower.includes('!')) {
+correction = 'Додай знак оклику: გამარჯობა!';
+}
+
+addMessage('ai', r, correction);
+}, 1200 + Math.random() * 800);
+}
+
+function speak(text) {
+if ('speechSynthesis' in window) {
+speechSynthesis.cancel();
+const u = new SpeechSynthesisUtterance(text);
+u.lang = 'uk-UA';
+u.rate = 0.9;
+speechSynthesis.speak(u);
+}
+}
+
+function toggleMic() {
+if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+alert('Твій браузер не підтримує голосовий ввід. Спробуй Chrome!');
+return;
+}
+
+if (isRecording) {
+recognition.stop();
+isRecording = false;
+document.getElementById('micBtn').classList.remove('recording');
+document.getElementById('micBtn').textContent = '🎤';
+return;
+}
+
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+recognition = new SpeechRecognition();
+recognition.lang = 'uk-UA';
+recognition.continuous = false;
+
+recognition.onstart = () => {
+isRecording = true;
+document.getElementById('micBtn').classList.add('recording');
+document.getElementById('micBtn').textContent = '⏹️';
+};
+
+recognition.onresult = (e) => {
+const text = e.results[0][0].transcript;
+document.getElementById('chatInput').value = text;
+sendMessage();
+};
+
+recognition.onend = () => {
+isRecording = false;
+document.getElementById('micBtn').classList.remove('recording');
+document.getElementById('micBtn').textContent = '🎤';
+};
+
+recognition.start();
+}
+
+// INIT
+renderPhrases();
+startDialog();
+</script>
+</body>
+</html>
