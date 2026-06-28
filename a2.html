@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kartuli — Рівень A2</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+<style>
+:root {
+--bg: #F5F5F5;
+--surface: #FFFFFF;
+--text: #111111;
+--text-muted: #666666;
+--accent: #2C3E8C;
+--accent-light: #E8ECFA;
+--border: #E0E0E0;
+--success: #2E7D32;
+--success-light: #E8F5E9;
+--error: #C62828;
+--error-light: #FFEBEE;
+--radius: 12px;
+--transition: 0.3s ease;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+nav {
+background: var(--surface);
+border-bottom: 1px solid var(--border);
+padding: 0 24px;
+height: 64px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+position: sticky;
+top: 0;
+z-index: 100;
+}
+
+.logo { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--accent); }
+.logo span { background: var(--accent); color: #fff; border-radius: 6px; padding: 2px 8px; margin-right: 6px; }
+.nav-back { color: var(--text-muted); font-size: 14px; text-decoration: none; padding: 8px 12px; border-radius: 8px; transition: background var(--transition); }
+.nav-back:hover { background: var(--accent-light); color: var(--accent); }
+
+.top-progress { height: 4px; background: var(--border); position: sticky; top: 64px; z-index: 99; }
+.top-progress-fill { height: 100%; background: var(--accent); transition: width 0.5s ease; }
+
+.container { max-width: 800px; margin: 0 auto; padding: 40px 24px; }
+
+.section-header { margin-bottom: 28px; }
+.level-badge { display: inline-block; background: var(--accent-light); color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 4px 10px; border-radius: 20px; margin-bottom: 12px; }
+.section-header h1 { font-family: 'Playfair Display', serif; font-size: 32px; margin-bottom: 8px; }
+.section-header p { color: var(--text-muted); font-size: 15px; line-height: 1.6; }
+
+.tabs { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 4px; margin-bottom: 32px; overflow-x: auto; }
+.tab { flex: 1; min-width: 100px; padding: 10px 16px; border: none; background: transparent; border-radius: 8px; font-size: 13px; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all var(--transition); white-space: nowrap; }
+.tab.active { background: var(--accent); color: #fff; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.ai-box { background: var(--accent-light); border: 1.5px solid var(--accent); border-radius: var(--radius); padding: 24px; margin-bottom: 32px; display: flex; gap: 16px; }
+.ai-avatar { width: 40px; height: 40px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.ai-box p { font-size: 14px; line-height: 1.7; }
+.ai-box strong { color: var(--accent); }
+
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+.word-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 20px; cursor: pointer; transition: all var(--transition); position: relative; }
+.word-card:hover { border-color: var(--accent); box-shadow: 0 4px 16px rgba(44,62,140,0.1); }
+.word-card .emoji { font-size: 36px; margin-bottom: 12px; display: block; }
+.word-card .geo { font-size: 20px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+.word-card .latin { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-style: italic; }
+.word-card .ukr { font-size: 14px; font-weight: 500; }
+.play-btn { position: absolute; top: 12px; right: 12px; background: var(--accent-light); border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; transition: background var(--transition); }
+.play-btn:hover { background: var(--accent); color: #fff; }
+
+.grammar-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin-bottom: 20px; }
+.grammar-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+.grammar-card p { font-size: 14px; line-height: 1.7; color: var(--text-muted); margin-bottom: 16px; }
+.example-row { background: var(--bg); border-radius: 8px; padding: 14px 16px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; flex-wrap: wrap; gap: 8px; }
+.example-geo { color: var(--accent); font-weight: 600; }
+.example-ukr { color: var(--text-muted); }
+
+.lesson-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+.lesson-item { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all var(--transition); }
+.lesson-item:hover { border-color: var(--accent); }
+.lesson-item.active-lesson { border-color: var(--accent); background: var(--accent-light); }
+.lesson-item-left { display: flex; align-items: center; gap: 16px; }
+.lesson-num { width: 36px; height: 36px; background: var(--accent-light); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
+.lesson-item h4 { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+.lesson-item p { font-size: 12px; color: var(--text-muted); }
+
+.quiz-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; margin-bottom: 20px; }
+.quiz-geo { font-size: 32px; color: var(--accent); font-weight: 700; margin-bottom: 24px; }
+.quiz-question { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.quiz-option { padding: 14px 18px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--surface); font-size: 14px; font-weight: 500; cursor: pointer; transition: all var(--transition); text-align: left; }
+.quiz-option:hover { border-color: var(--accent); background: var(--accent-light); }
+.quiz-option.correct { border-color: var(--success); background: var(--success-light); color: var(--success); }
+.quiz-option.wrong { border-color: var(--error); background: var(--error-light); color: var(--error); }
+.quiz-feedback { margin-top: 16px; padding: 12px 16px; border-radius: 8px; font-size: 14px; font-weight: 500; display: none; }
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct { background: var(--success-light); color: var(--success); }
+.quiz-feedback.wrong { background: var(--error-light); color: var(--error); }
+.quiz-next { margin-top: 16px; display: none; }
+.quiz-next.show { display: block; }
+
+.score-bar { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 24px; font-size: 14px; }
+.score-dot { width: 10px; height: 10px; border-radius: 50%; }
+.score-dot.correct { background: var(--success); }
+.score-dot.wrong { background: var(--error); }
+
+.btn { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 12px 24px; font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity var(--transition); }
+.btn:hover { opacity: 0.88; }
+.btn-outline { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+.btn-outline:hover { background: var(--accent-light); opacity: 1; }
+
+@media (max-width: 600px) {
+.quiz-options { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="logo"><span>კ</span> Kartuli</div>
+<a class="nav-back" href="index.html">← Назад до рівнів</a>
+</nav>
+
+<div class="top-progress">
+<div class="top-progress-fill" style="width: 0%"></div>
+</div>
+
+<div class="container">
+
+<div class="section-header">
+<div class="level-badge">A2 — Елементарний</div>
+<h1>Повсякденне спілкування</h1>
+<p>Сім'я, робота, час, числа і прості розмови. Розширюємо словниковий запас до 300 слів!</p>
+</div>
+
+<div class="tabs">
+<button class="tab active" onclick="switchTab('lessons')">📚 Уроки</button>
+<button class="tab" onclick="switchTab('words')">🃏 Слова</button>
+<button class="tab" onclick="switchTab('grammar')">📖 Граматика</button>
+<button class="tab" onclick="switchTab('quiz')">✏️ Тест</button>
+</div>
+
+<!-- УРОКИ -->
+<div class="tab-content active" id="tab-lessons">
+<div class="ai-box">
+<div class="ai-avatar">🤖</div>
+<p>Вітаю на рівні <strong>A2</strong>! Тут ти вивчиш як говорити про <strong>сім'ю, роботу, час та числа</strong>. Навчишся будувати складніші речення і вести прості розмови. Вперед!</p>
+</div>
+<div class="lesson-list">
+<div class="lesson-item active-lesson" onclick="switchTab('words')">
+<div class="lesson-item-left">
+<div class="lesson-num">1</div>
+<div><h4>Сім'я та люди</h4><p>Як розповісти про свою сім'ю · 50 слів</p></div>
+</div>
+<span>▶️</span>
+</div>
+<div class="lesson-item" onclick="switchTab('grammar')">
+<div class="lesson-item-left">
+<div class="lesson-num">2</div>
+<div><h4>Числа та час</h4><p>Від 1 до 1000, дні тижня, місяці</p></div>
+</div>
+<span>🔒</span>
+</div>
+<div class="lesson-item" onclick="switchTab('grammar')">
+<div class="lesson-item-left">
+<div class="lesson-num">3</div>
+<div><h4>Дієслова руху</h4><p>Йти, їхати, летіти — з відмінюванням</p></div>
+</div>
+<span>🔒</span>
+</div>
+<div class="lesson-item" onclick="switchTab('quiz')">
+<div class="lesson-item-left">
+<div class="lesson-num">4</div>
+<div><h4>Тест A2</h4><p>Перевір свої знання рівня A2</p></div>
+</div>
+<span>🔒</span>
+</div>
+</div>
+</div>
+
+<!-- СЛОВА -->
+<div class="tab-content" id="tab-words">
+<div class="ai-box">
+<div class="ai-avatar">🤖</div>
+<p>Слова рівня A2 — <strong>сім'я, робота, місто, природа</strong>. Натискай на картку щоб почути слово!</p>
+</div>
+<div class="cards-grid" id="wordsGrid"></div>
+<button class="btn btn-outline" onclick="switchTab('grammar')">Далі: Граматика →</button>
+</div>
+
+<!-- ГРАМАТИКА -->
+<div class="tab-content" id="tab-grammar">
+<div class="ai-box">
+<div class="ai-avatar">🤖</div>
+<p>На рівні A2 вивчаємо <strong>відмінювання дієслів, числа і питальні речення</strong>. Грузинська граматика логічна — якщо зрозумієш правила, все стане простіше!</p>
+</div>
+
+<div class="grammar-card">
+<h3>🔢 Числа 1-20</h3>
+<p>Вивчи числа — вони потрібні скрізь!</p>
+<div class="example-row"><span class="example-geo">ერთი</span><span class="example-ukr">1 (erti)</span></div>
+<div class="example-row"><span class="example-geo">ორი</span><span class="example-ukr">2 (ori)</span></div>
+<div class="example-row"><span class="example-geo">სამი</span><span class="example-ukr">3 (sami)</span></div>
+<div class="example-row"><span class="example-geo">ოთხი</span><span class="example-ukr">4 (otkhi)</span></div>
+<div class="example-row"><span class="example-geo">ხუთი</span><span class="example-ukr">5 (khuti)</span></div>
+<div class="example-row"><span class="example-geo">ექვსი</span><span class="example-ukr">6 (ekvsi)</span></div>
+<div class="example-row"><span class="example-geo">შვიდი</span><span class="example-ukr">7 (shvidi)</span></div>
+<div class="example-row"><span class="example-geo">რვა</span><span class="example-ukr">8 (rva)</span></div>
+<div class="example-row"><span class="example-geo">ცხრა</span><span class="example-ukr">9 (tskhra)</span></div>
+<div class="example-row"><span class="example-geo">ათი</span><span class="example-ukr">10 (ati)</span></div>
+</div>
+
+<div class="grammar-card">
+<h3>📅 Дні тижня</h3>
+<p>В грузинській мові дні тижня дуже цікаві!</p>
+<div class="example-row"><span class="example-geo">ორშაბათი</span><span class="example-ukr">Понеділок (orshabati)</span></div>
+<div class="example-row"><span class="example-geo">სამშაბათი</span><span class="example-ukr">Вівторок (samshabati)</span></div>
+<div class="example-row"><span class="example-geo">ოთხშაბათი</span><span class="example-ukr">Середа (otkhshabati)</span></div>
+<div class="example-row"><span class="example-geo">ხუთშაბათი</span><span class="example-ukr">Четвер (khutshabati)</span></div>
+<div class="example-row"><span class="example-geo">პარასკევი</span><span class="example-ukr">П'ятниця (paraskevi)</span></div>
+<div class="example-row"><span class="example-geo">შაბათი</span><span class="example-ukr">Субота (shabati)</span></div>
+<div class="example-row"><span class="example-geo">კვირა</span><span class="example-ukr">Неділя (kvira)</span></div>
+</div>
+
+<div class="grammar-card">
+<h3>👨‍👩‍👧 Сім'я</h3>
+<p>Як говорити про членів сім'ї!</p>
+<div class="example-row"><span class="example-geo">დედა</span><span class="example-ukr">Мама (deda)</span></div>
+<div class="example-row"><span class="example-geo">მამა</span><span class="example-ukr">Тато (mama)</span></div>
+<div class="example-row"><span class="example-geo">და</span><span class="example-ukr">Сестра (da)</span></div>
+<div class="example-row"><span class="example-geo">ძმა</span><span class="example-ukr">Брат (dzma)</span></div>
+<div class="example-row"><span class="example-geo">შვილი</span><span class="example-ukr">Дитина (shvili)</span></div>
+<div class="example-row"><span class="example-geo">ბებია</span><span class="example-ukr">Бабуся (bebia)</span></div>
+<div class="example-row"><span class="example-geo">პაპა</span><span class="example-ukr">Дідусь (papa)</span></div>
+</div>
+
+<div class="grammar-card">
+<h3>❓ Питальні речення</h3>
+<p>Як задавати питання грузинською!</p>
+<div class="example-row"><span class="example-geo">სად ხარ?</span><span class="example-ukr">Де ти? (sad khar)</span></div>
+<div class="example-row"><span class="example-geo">რა გქვია?</span><span class="example-ukr">Як тебе звати? (ra gqvia)</span></div>
+<div class="example-row"><span class="example-geo">რამდენი წლის ხარ?</span><span class="example-ukr">Скільки тобі років? (ramdeni tslis khar)</span></div>
+<div class="example-row"><span class="example-geo">სად მუშაობ?</span><span class="example-ukr">Де ти працюєш? (sad mushaob)</span></div>
+<div class="example-row"><span class="example-geo">რა გინდა?</span><span class="example-ukr">Що ти хочеш? (ra ginda)</span></div>
+</div>
+
+<button class="btn" onclick="switchTab('quiz')">Далі: Тест →</button>
+</div>
+
+<!-- ТЕСТ -->
+<div class="tab-content" id="tab-quiz">
+<div class="ai-box">
+<div class="ai-avatar">🤖</div>
+<p>Тест рівня <strong>A2</strong>! Перевіримо числа, дні тижня та сім'ю. У тебе є <strong>3 підказки</strong>. Успіхів!</p>
+</div>
+<div class="score-bar">
+<span>Прогрес:</span>
+<span id="quizProgress">0 / 8</span>
+<div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;">
+<div id="quizProgressBar" style="height:100%;background:var(--accent);transition:width 0.4s;width:0%"></div>
+</div>
+<span style="display:flex;align-items:center;gap:6px;"><span class="score-dot correct"></span><span id="correctCount">0</span></span>
+<span style="display:flex;align-items:center;gap:6px;"><span class="score-dot wrong"></span><span id="wrongCount">0</span></span>
+<button class="btn btn-outline" style="padding:6px 14px;font-size:12px;" onclick="useHint()">💡 (<span id="hintCount">3</span>)</button>
+</div>
+<div class="quiz-card" id="quizCard">
+<p class="quiz-question" id="quizQuestion">Що означає це слово?</p>
+<div class="quiz-geo" id="quizWord"></div>
+<div class="quiz-options" id="quizOptions"></div>
+<div class="quiz-feedback" id="quizFeedback"></div>
+<div class="quiz-next" id="quizNext">
+<button class="btn" onclick="nextQuestion()">Наступне →</button>
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+const words = [
+{emoji:'👩',geo:'დედა',latin:'deda',ukr:'Мама'},
+{emoji:'👨',geo:'მამა',latin:'mama',ukr:'Тато'},
+{emoji:'👧',geo:'და',latin:'da',ukr:'Сестра'},
+{emoji:'👦',geo:'ძმა',latin:'dzma',ukr:'Брат'},
+{emoji:'👶',geo:'შვილი',latin:'shvili',ukr:'Дитина'},
+{emoji:'👵',geo:'ბებია',latin:'bebia',ukr:'Бабуся'},
+{emoji:'👴',geo:'პაპა',latin:'papa',ukr:'Дідусь'},
+{emoji:'🏠',geo:'სახლი',latin:'sakhli',ukr:'Будинок'},
+{emoji:'🏙️',geo:'ქალაქი',latin:'qalaqi',ukr:'Місто'},
+{emoji:'💼',geo:'სამსახური',latin:'samsakhuri',ukr:'Робота'},
+{emoji:'📚',geo:'სკოლა',latin:'skola',ukr:'Школа'},
+{emoji:'🌳',geo:'ხე',latin:'khe',ukr:'Дерево'},
+];
+
+const quizData = [
+{word:'დედა',correct:'Мама',options:['Мама','Тато','Сестра','Брат']},
+{word:'ძმა',correct:'Брат',options:['Сестра','Брат','Дитина','Дідусь']},
+{word:'ორშაბათი',correct:'Понеділок',options:['Вівторок','Середа','Понеділок','П\'ятниця']},
+{word:'ხუთი',correct:'5',options:['3','4','5','6']},
+{word:'სად ხარ?',correct:'Де ти?',options:['Як справи?','Де ти?','Що хочеш?','Хто ти?']},
+{word:'ქალაქი',correct:'Місто',options:['Будинок','Місто','Школа','Робота']},
+{word:'შაბათი',correct:'Субота',options:['Неділя','П\'ятниця','Субота','Четвер']},
+{word:'სამსახური',correct:'Робота',options:['Школа','Робота','Місто','Сім\'я']},
+];
+
+let currentQuestion = 0, correct = 0, wrong = 0, hints = 3, answered = false;
+
+function renderWords() {
+document.getElementById('wordsGrid').innerHTML = words.map(w => `
+<div class="word-card">
+<button class="play-btn" onclick="speak('${w.ukr}')">🔊</button>
+<span class="emoji">${w.emoji}</span>
+<div class="geo">${w.geo}</div>
+<div class="latin">${w.latin}</div>
+<div class="ukr">${w.ukr}</div>
+</div>
+`).join('');
+}
+
+function speak(text) {
+if ('speechSynthesis' in window) {
+const u = new SpeechSynthesisUtterance(text);
+u.lang = 'uk-UA';
+speechSynthesis.speak(u);
+}
+}
+
+function switchTab(name) {
+const names = ['lessons','words','grammar','quiz'];
+document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', names[i] === name));
+document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+document.getElementById('tab-'+name).classList.add('active');
+if (name === 'quiz') renderQuestion();
+}
+
+function renderQuestion() {
+if (currentQuestion >= quizData.length) { showResult(); return; }
+answered = false;
+const q = quizData[currentQuestion];
+document.getElementById('quizWord').textContent = q.word;
+document.getElementById('quizProgress').textContent = `${currentQuestion+1} / ${quizData.length}`;
+document.getElementById('quizProgressBar').style.width = `${(currentQuestion/quizData.length)*100}%`;
+const opts = [...q.options].sort(() => Math.random() - 0.5);
+document.getElementById('quizOptions').innerHTML = opts.map(o =>
+`<button class="quiz-option" onclick="checkAnswer('${o}','${q.correct}',this)">${o}</button>`
+).join('');
+document.getElementById('quizFeedback').className = 'quiz-feedback';
+document.getElementById('quizNext').className = 'quiz-next';
+}
+
+function checkAnswer(selected, correct_ans, btn) {
+if (answered) return;
+answered = true;
+document.querySelectorAll('.quiz-option').forEach(b => { if (b.textContent === correct_ans) b.classList.add('correct'); });
+const feedback = document.getElementById('quizFeedback');
+if (selected === correct_ans) {
+btn.classList.add('correct');
+feedback.textContent = '✅ Правильно!';
+feedback.className = 'quiz-feedback show correct';
+correct++;
+document.getElementById('correctCount').textContent = correct;
+} else {
+btn.classList.add('wrong');
+feedback.textContent = `❌ Правильна відповідь: ${correct_ans}`;
+feedback.className = 'quiz-feedback show wrong';
+wrong++;
+document.getElementById('wrongCount').textContent = wrong;
+}
+document.getElementById('quizNext').className = 'quiz-next show';
+}
+
+function nextQuestion() { currentQuestion++; renderQuestion(); }
+
+function useHint() {
+if (hints <= 0 || answered) return;
+hints--;
+document.getElementById('hintCount').textContent = hints;
+const q = quizData[currentQuestion];
+let removed = 0;
+document.querySelectorAll('.quiz-option').forEach(b => {
+if (removed < 2 && b.textContent !== q.correct) { b.style.opacity = '0.3'; b.style.pointerEvents = 'none'; removed++; }
+});
+}
+
+function showResult() {
+const pct = Math.round((correct/quizData.length)*100);
+document.getElementById('quizCard').innerHTML = `
+<div style="text-align:center;padding:20px;">
+<div style="font-size:48px;margin-bottom:16px;">${pct >= 70 ? '🎉' : '📚'}</div>
+<h2 style="font-size:24px;margin-bottom:8px;">${pct >= 70 ? 'Вітаємо!' : 'Продовжуй!'}</h2>
+<p style="color:var(--text-muted);margin-bottom:24px;">Результат: <strong>${correct} з ${quizData.length}</strong> (${pct}%)</p>
+<div style="display:flex;gap:12px;justify-content:center;">
+<button class="btn" onclick="restartQuiz()">Ще раз</button>
+<a href="index.html" class="btn btn-outline">До рівнів</a>
+</div>
+</div>
+`;
+}
+
+function restartQuiz() {
+currentQuestion = 0; correct = 0; wrong = 0; hints = 3; answered = false;
+document.getElementById('correctCount').textContent = 0;
+document.getElementById('wrongCount').textContent = 0;
+document.getElementById('hintCount').textContent = 3;
+document.getElementById('quizCard').innerHTML = `
+<p class="quiz-question" id="quizQuestion">Що означає це слово?</p>
+<div class="quiz-geo" id="quizWord"></div>
+<div class="quiz-options" id="quizOptions"></div>
+<div class="quiz-feedback" id="quizFeedback"></div>
+<div class="quiz-next" id="quizNext"><button class="btn" onclick="nextQuestion()">Наступне →</button></div>
+`;
+renderQuestion();
+}
+
+renderWords();
+</script>
+</body>
+</html>
